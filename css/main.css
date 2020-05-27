@@ -1,14 +1,16 @@
 body {
   background-color: #292929;
+  color: rgb(250, 250, 250);
+  letter-spacing: 0.1rem;
 }
 
-#canvas-container {
+/* #canvas-container {
   margin-top: 4rem;
   display: flex;
   justify-content: center;
-}
+} */
 
-#game {
+#canvas {
   background-color: rgb(36, 36, 36);
-  box-shadow: 0px 0px 2px 1px rgba(0, 0, 0, 0.75);
+  box-shadow: 0px 0px 4px 2px rgba(0, 0, 0, 0.75);
 }

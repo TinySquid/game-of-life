@@ -8,9 +8,56 @@
     <link rel="stylesheet" type="text/css" href="css/main.css" />
   </head>
   <body>
-    <div id="canvas-container">
-      <canvas id="game" width="400" height="400"></canvas>
-    </div>
-    <script type="module" src="js/index.js"></script>
+    <main>
+      <!-- Title -->
+      <div class="container">
+        <!-- <div class="title"> -->
+        <h1>Conway's Game of Life</h1>
+        <!-- </div> -->
+
+        <!-- Section content -->
+        <section class="game">
+          <div class="game-container">
+            <h2>Generation: 0</h2>
+
+            <!-- Game Canvas -->
+            <div class="canvas-container">
+              <canvas id="canvas" width="400" height="400"></canvas>
+            </div>
+
+            <!-- Game Controls Row -->
+            <div class="controls">
+              <button>Play</button>
+              <button>Pause</button>
+              <button>Stop</button>
+            </div>
+          </div>
+
+          <!-- Presets Column -->
+          <div class="presets"></div>
+
+          <!-- Rules Section -->
+          <div class="rules">
+            <ol>
+              <li>Any live cell with two or three live neighbours survives.</li>
+              <li>Any dead cell with three live neighbours becomes a live cell.</li>
+              <li>All other live cells die in the next generation. Similarly, all other dead cells stay dead.</li>
+            </ol>
+          </div>
+        </section>
+        <!-- Description Section -->
+        <section class="about">
+          <!-- <div> -->
+          <h2>About this Algorithm</h2>
+          <p>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempore doloribus doloremque omnis eum dolorem
+            atque totam placeat vero id aliquam vel nemo, commodi non quasi. Assumenda accusamus soluta commodi
+            corporis.
+          </p>
+          <!-- </div> -->
+        </section>
+      </div>
+      <script type="module" src="js/index.js"></script>
+    </main>
   </body>
 </html>
