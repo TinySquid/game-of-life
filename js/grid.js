@@ -7,27 +7,22 @@
 import Cell from "./Cell.js";
 
 export default class Grid {
-  constructor(width, height, cellWidth, cellHeight, initialState = null) {
-    this.width = width;
-    this.height = height;
+  constructor(preset) {
+    this.width = preset.gridWidth;
+    this.height = preset.gridHeight;
 
-    this.cellWidth = cellWidth;
-    this.cellHeight = cellHeight;
+    this.cellWidth = preset.cellWidth;
+    this.cellHeight = preset.cellHeight;
 
-    if (initialState) {
-      // TODO: Error checking (ensure initialState is a 2D array matching the width and height provided)
-      this.state = initialState;
-    } else {
-      // Build grid with default preset
-      this.state = [];
+    // Build grid with preset
+    this.state = [];
 
-      for (let y = 0; y < height; y++) {
-        let row = [];
-        for (let x = 0; x < width; x++) {
-          row.push(new Cell(cellWidth, cellHeight));
-        }
-        this.state.push(row);
+    for (let y = 0; y < this.height; y++) {
+      let row = [];
+      for (let x = 0; x < this.width; x++) {
+        row.push(new Cell(this.cellWidth, this.cellHeight, preset.liveColor, preset.deadColor, preset.cells[y][x]));
       }
+      this.state.push(row);
     }
   }
 

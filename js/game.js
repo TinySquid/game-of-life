@@ -7,10 +7,11 @@ import { STATE, StateMachine } from "./GameState.js";
 import Grid from "./Grid.js";
 
 export default class Game {
-  constructor(gridWidth = 100, gridHeight = 100, cellWidth = 8, cellHeight = 8, targetDelay = 10) {
+  constructor(targetDelay = 10, preset = null) {
     this.gameState = new StateMachine();
     this.generation = 0;
-    this.grid = new Grid(gridWidth, gridHeight, cellWidth, cellHeight);
+
+    this.grid = new Grid(preset);
 
     const canvas = document.getElementById("game");
 

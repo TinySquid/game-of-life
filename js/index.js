@@ -1,5 +1,10 @@
 import Game from "./Game.js";
 
-const gameOfLife = new Game(50, 50, 8, 8, 250);
+// Grid "initial state" presets
+import preset from "./presets.js";
 
+// targetDelay is how fast the iterations will be rendered
+const gameOfLife = new Game(250, preset.blank);
+
+// Start!
 gameOfLife.play();
