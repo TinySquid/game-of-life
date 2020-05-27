@@ -10,7 +10,7 @@ export default class Cell {
     this.height = height;
     this.liveColor = liveColor;
     this.deadColor = deadColor;
-    this.isAlive = true;
+    this.isAlive = isAlive;
   }
 
   // Draw cell onto canvas
