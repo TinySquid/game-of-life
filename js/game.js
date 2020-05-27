@@ -27,7 +27,12 @@ export default class Game {
       // Can only edit the grid when game is paused / stopped / idle
       if (this.gameState.state != STATE.PLAYING) {
         if (cell) {
-          cell.resurrect(); // Turn on the cell
+          // Toggle cell state
+          if (cell.isAlive) {
+            cell.kill();
+          } else {
+            cell.resurrect(); // Turn on the cell
+          }
         }
       }
     });
