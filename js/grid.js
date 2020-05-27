@@ -16,14 +16,19 @@ export default class Grid {
 
     // Build grid with preset
     this.state = [];
+    this.cellPositions = {};
 
     for (let y = 0; y < this.height; y++) {
-      let row = [];
+      const row = [];
       for (let x = 0; x < this.width; x++) {
+        // This adds a new cell to the grid state
         row.push(new Cell(this.cellWidth, this.cellHeight, preset.liveColor, preset.deadColor, preset.cells[y][x]));
+        // This adds the same cell to an object that maps xy coords to state xy indices
+        this.cellPositions[`${y}${x}`] = [y, x];
       }
       this.state.push(row);
     }
+    // console.log(this.state, "\n", this.cellPositions);
   }
 
   draw(context) {
@@ -34,5 +39,25 @@ export default class Grid {
         this.state[y][x].draw(context, x * this.cellWidth, y * this.cellHeight);
       }
     }
+  }
+
+  getCellAt(x, y) {
+    /* This will return the cell at the position
+    specified by the mouse x / y, normalized to
+    the canvas and the grid cell width / height.
+    */
+    // Convert mouse coord to grid cell coords
+    const baseX = Math.floor(x / this.cellWidth);
+    const baseY = Math.floor(y / this.cellHeight);
+
+    // Get cell index encoded by cellPositions hashtable
+    const cellIndex = this.cellPositions[`${baseY}${baseX}`];
+
+    // Get the cell at state column and row index
+    const cell = this.state[cellIndex[0]][cellIndex[1]];
+
+    return cell;
+
+    // console.log(`Cell @ ${baseX}/${baseY} is: ${cell.isAlive ? "alive" : "dead"}`);
   }
 }
