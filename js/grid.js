@@ -28,7 +28,15 @@ export default class Grid {
       }
       this.state.push(row);
     }
-    // console.log(this.state, "\n", this.cellPositions);
+  }
+
+  reset() {
+    // Clear the grid (kill all the cells)
+    this.state.forEach((col) => {
+      col.forEach((cell) => {
+        cell.kill();
+      });
+    });
   }
 
   draw(context) {
@@ -46,6 +54,7 @@ export default class Grid {
     specified by the mouse x / y, normalized to
     the canvas and the grid cell width / height.
     */
+
     // Convert mouse coord to grid cell coords
     const baseX = Math.floor(x / this.cellWidth);
     const baseY = Math.floor(y / this.cellHeight);
@@ -57,7 +66,5 @@ export default class Grid {
     const cell = this.state[cellIndex[0]][cellIndex[1]];
 
     return cell;
-
-    // console.log(`Cell @ ${baseX}/${baseY} is: ${cell.isAlive ? "alive" : "dead"}`);
   }
 }

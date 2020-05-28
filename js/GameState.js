@@ -14,19 +14,25 @@ export class StateMachine {
     switch (newState) {
       case STATE.PAUSED: {
         if (this.state === STATE.PLAYING) {
-          this.state = STATE.PAUSED;
+          this.state = newState;
         }
         break;
       }
       case STATE.PLAYING: {
         if (this.state === STATE.PAUSED || this.state === STATE.STOPPED || this.state === STATE.IDLE) {
-          this.state = STATE.PLAYING;
+          this.state = newState;
         }
         break;
       }
       case STATE.STOPPED: {
         if (this.state === STATE.PLAYING || this.state === STATE.PAUSED) {
-          this.state = STATE.STOPPED;
+          this.state = newState;
+        }
+        break;
+      }
+      case STATE.IDLE: {
+        if (this.state === STATE.STOPPED) {
+          this.state = newState;
         }
         break;
       }

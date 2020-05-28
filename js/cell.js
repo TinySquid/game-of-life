@@ -11,12 +11,20 @@ export default class Cell {
     this.liveColor = liveColor;
     this.deadColor = deadColor;
     this.isAlive = isAlive;
+    this.survivedGenerations = 0;
   }
 
   // Draw cell onto canvas
   draw(context, x, y) {
     // Determine color by state
-    this.isAlive ? (context.fillStyle = this.liveColor) : (context.fillStyle = this.deadColor);
+    if (this.isAlive) {
+      // Yay we lived another generation!
+      this.survivedGenerations++;
+      context.fillStyle = this.liveColor;
+    } else {
+      context.fillStyle = this.deadColor;
+    }
+
     // Draw to context
     context.fillRect(x, y, x + this.width, y + this.height);
     context.strokeRect(x, y, x + this.width, y + this.height);
@@ -25,6 +33,7 @@ export default class Cell {
   // Kill the cell >:)
   kill() {
     this.isAlive = false;
+    this.survivedGenerations = 0;
   }
 
   // CONJURATION 100

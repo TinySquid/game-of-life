@@ -7,9 +7,10 @@ import { STATE, StateMachine } from "./GameState.js";
 import Grid from "./Grid.js";
 
 export default class Game {
-  constructor(canvas, targetDelay = 10, preset = null) {
+  constructor(genCounter, canvas, targetDelay = 10, preset = null) {
     this.gameState = new StateMachine();
     this.grid = new Grid(preset);
+    this.genCounter = genCounter;
     this.generation = 0;
 
     this.context = canvas.getContext("2d");
@@ -63,14 +64,26 @@ export default class Game {
     switch (this.gameState.state) {
       case STATE.PLAYING: {
         // TODO Run simulation step
+        /*
+        Make a copy of the grid and run the algorithm to
+        determine what cells will live / die / grow.
+        Overwrite the original grid with the new state.
+
+        rules -> 
+        
+        */
+        this.generation++;
+        this.genCounter.textContent = `Generation: ${this.generation}`;
         break;
       }
       case STATE.PAUSED: {
-        // TODO Allow for toggling cells via mouse
+        // Nothing needs to be done here but I'm leaving it for future stuff
         break;
       }
       case STATE.STOPPED: {
-        // TODO Clear grid, reset game
+        this.grid.reset();
+
+        this.gameState.transitionTo(STATE.IDLE);
         break;
       }
       default: {
