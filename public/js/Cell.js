@@ -27,7 +27,6 @@ export default class Cell {
 
     // Draw to context
     context.fillRect(x, y, x + this.width, y + this.height);
-    context.strokeRect(x, y, x + this.width, y + this.height);
   }
 
   // Kill the cell >:)

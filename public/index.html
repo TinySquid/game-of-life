@@ -11,12 +11,10 @@
     <main>
       <!-- Title -->
       <div class="container">
-        <!-- <div class="title"> -->
-        <h1>Conway's Game of Life</h1>
-        <!-- </div> -->
+        <h1 class="title">Conway's Game of Life</h1>
 
-        <!-- Section content -->
-        <section class="game">
+        <!-- Middle section -->
+        <section class="middle-container">
           <div class="game-container">
             <h2 id="generation-counter">Generation: 0</h2>
 
@@ -30,14 +28,18 @@
               <button id="play">Play</button>
               <button id="pause">Pause</button>
               <button id="stop">Stop</button>
+              <button id="clear">Clear</button>
             </div>
           </div>
 
           <!-- Presets Column -->
-          <div class="presets"></div>
+          <div class="presets">
+            <img src="" alt="" />
+          </div>
 
           <!-- Rules Section -->
           <div class="rules">
+            <h2>Rules</h2>
             <ol>
               <li>Any live cell with two or three live neighbours survives.</li>
               <li>Any dead cell with three live neighbours becomes a live cell.</li>
@@ -45,17 +47,32 @@
             </ol>
           </div>
         </section>
-        <!-- Description Section -->
-        <section class="about">
+        <!-- Bottom Section -->
+        <section class="bottom-container">
           <!-- <div> -->
           <h2>About this Algorithm</h2>
           <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempore doloribus doloremque omnis eum dolorem
-            atque totam placeat vero id aliquam vel nemo, commodi non quasi. Assumenda accusamus soluta commodi
-            corporis.
+            The Game of Life, also known simply as Life, is a cellular automaton devised by the British mathematician
+            John Horton Conway in 1970. It is a zero-player game, meaning that its evolution is determined by its
+            initial state, requiring no further input. One interacts with the Game of Life by creating an initial
+            configuration and observing how it evolves. It is Turing complete and can simulate a universal constructor
+            or any other Turing machine.
           </p>
           <!-- </div> -->
         </section>
+        <!-- Source and attribution -->
+        <footer class="source">
+          <span
+            >Built by Michael Nunes |
+            <a
+              href="https://github.com/TinySquid/game-of-life"
+              class="repo-source"
+              target="_blank"
+              rel="noopener noreferrer"
+              >Github Repository</a
+            ></span
+          >
+        </footer>
       </div>
       <script type="module" src="js/index.js"></script>
     </main>
