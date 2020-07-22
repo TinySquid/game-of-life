@@ -12,4 +12,4 @@ The universe of the Game of Life is an infinite, two-dimensional orthogonal grid
 
 ## Emergent Patterns
 
-![Example Patterns](/docs/images/patterns.gif)
+![Example Patterns](/docs/img/patterns.gif)
