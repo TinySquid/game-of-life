@@ -1,6 +1,8 @@
 /**
  * A cell has basic attributes like width, height, position, colors for living state & deadstate.
  */
+import { context } from "./context";
+
 export default class Cell {
   constructor(width, height, x, y, liveColor, deadColor, isAlive = false) {
     this.width = width;
@@ -10,15 +12,15 @@ export default class Cell {
 
     this.liveColor = liveColor;
     this.deadColor = deadColor;
-    
+
     this.isAlive = isAlive;
-    
+
     // Metrics
     this.survivedGenerations = 0;
   }
 
   // Draw cell onto canvas
-  draw(context, x, y) {
+  draw() {
     // Determine color by state
     if (this.isAlive) {
       // Yay we lived another generation!
@@ -28,7 +30,6 @@ export default class Cell {
       context.fillStyle = this.deadColor;
     }
 
-    // Draw to context
     context.fillRect(this.x, this.y, this.x + this.width, this.y + this.height);
   }
 

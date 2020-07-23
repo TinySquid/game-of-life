@@ -20,12 +20,15 @@ const clearBtn = document.getElementById("clear");
 playBtn.addEventListener("click", (e) => {
   gameOfLife.play();
 });
+
 pauseBtn.addEventListener("click", (e) => {
   gameOfLife.pause();
 });
+
 stopBtn.addEventListener("click", (e) => {
   gameOfLife.stop();
 });
+
 clearBtn.addEventListener("click", (e) => {
   gameOfLife.clear();
 });

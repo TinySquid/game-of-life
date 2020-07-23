@@ -5,6 +5,7 @@
  */
 
 import Cell from "./Cell.js";
+import { context } from "./context";
 
 export default class Grid {
   constructor(preset) {
@@ -15,13 +16,23 @@ export default class Grid {
     this.cellHeight = preset.cellHeight;
 
     this.state = [];
-    
+
     // Build grid with preset
     for (let y = 0; y < this.height; y++) {
-      // Assemble each row 
+      // Assemble each row
       const row = [];
       for (let x = 0; x < this.width; x++) {
-        row.push(new Cell(this.cellWidth, this.cellHeight, x * this.cellWidth, y * this.cellHeight, preset.liveColor, preset.deadColor, preset.cells[y][x]));
+        row.push(
+          new Cell(
+            this.cellWidth,
+            this.cellHeight,
+            x * this.cellWidth,
+            y * this.cellHeight,
+            preset.liveColor,
+            preset.deadColor,
+            preset.cells[y][x]
+          )
+        );
       }
       // state[y] will return a row array [x]
       // state[y][x]
@@ -57,7 +68,7 @@ export default class Grid {
     });
   }
 
-  draw(context) {
+  draw() {
     // For each row in each column, draw all cells
     for (let y = 0; y < this.height; y++) {
       for (let x = 0; x < this.width; x++) {
@@ -137,7 +148,7 @@ export default class Grid {
     const baseY = Math.floor(y / this.cellHeight);
 
     // Get the cell at state column and row index
-    console.log(this.state[baseY][baseX])
+    console.log(this.state[baseY][baseX]);
     return this.state[baseY][baseX];
   }
 }

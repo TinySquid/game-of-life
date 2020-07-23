@@ -13,9 +13,7 @@ export default class Game {
     this.genCounter = genCounter;
     this.generation = 0;
 
-    this.context = canvas.getContext("2d");
-
-    // Setup mouse click detection on canvas
+    // Setup mouse click detection on canvas so we can toggle individual cells
     canvas.addEventListener("mousedown", (e) => {
       const rect = canvas.getBoundingClientRect();
 
@@ -126,7 +124,7 @@ export default class Game {
       }
     }
 
-    // Always draw the grid
-    this.grid.draw(this.context);
+    // Draw grid
+    this.grid.draw();
   }
 }
