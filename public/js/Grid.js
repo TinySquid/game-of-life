@@ -14,20 +14,34 @@ export default class Grid {
     this.cellWidth = preset.cellWidth;
     this.cellHeight = preset.cellHeight;
 
-    // Build grid with preset
     this.state = [];
-    this.cellPositions = {};
-
+    
+    // Build grid with preset
     for (let y = 0; y < this.height; y++) {
+      // Assemble each row 
       const row = [];
       for (let x = 0; x < this.width; x++) {
-        // This adds a new cell to the grid state
-        row.push(new Cell(this.cellWidth, this.cellHeight, preset.liveColor, preset.deadColor, preset.cells[y][x]));
-        // This adds the same cell to an object that maps xy coords to state xy indices
-        this.cellPositions[`${y}${x}`] = [y, x];
+        row.push(new Cell(this.cellWidth, this.cellHeight, x * this.cellWidth, y * this.cellHeight, preset.liveColor, preset.deadColor, preset.cells[y][x]));
       }
+      // state[y] will return a row array [x]
+      // state[y][x]
       this.state.push(row);
     }
+
+    // console.log(this.cellPositions)
+    //* This will generate a grid in a JSON friendly format
+    // const gridFormat = {
+    //   width: 8,
+    //   height: 8,
+    //   liveColor: "white",
+    //   deadColor: "black",
+    //   cells: this.state.map((y) => {
+    //     return y.map((x) => {
+    //       return x.isAlive ? 1 : false;
+    //     });
+    //   }),
+    // };
+    // console.log(JSON.stringify(gridFormat));
   }
 
   update(newGridState) {
@@ -98,8 +112,8 @@ export default class Grid {
       // If a cell is alive
       const neighborCell = this.getCellAtIndex(pos[0], pos[1]);
 
-      if(neighborCell.isAlive) {
-        return count += 1;
+      if (neighborCell.isAlive) {
+        return (count += 1);
       } else {
         return count + 0;
       }
@@ -122,12 +136,8 @@ export default class Grid {
     const baseX = Math.floor(x / this.cellWidth);
     const baseY = Math.floor(y / this.cellHeight);
 
-    // Get cell index encoded by cellPositions hashtable
-    const cellIndex = this.cellPositions[`${baseY}${baseX}`];
-
     // Get the cell at state column and row index
-    const cell = this.state[cellIndex[0]][cellIndex[1]];
-
-    return cell;
+    console.log(this.state[baseY][baseX])
+    return this.state[baseY][baseX];
   }
 }

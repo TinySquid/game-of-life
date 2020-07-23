@@ -1,16 +1,19 @@
 /**
- * A cell is an individual "pixel" with basic attributes
- * like width, height, colors for living state & deadstate.
- * In the future I'd like to add the ability to track how
- * many generations a cell lived before dying.
+ * A cell has basic attributes like width, height, position, colors for living state & deadstate.
  */
 export default class Cell {
-  constructor(width = 8, height = 8, liveColor = "white", deadColor = "rgb(18, 18, 18)", isAlive = false) {
+  constructor(width, height, x, y, liveColor, deadColor, isAlive = false) {
     this.width = width;
     this.height = height;
+    this.x = x;
+    this.y = y;
+
     this.liveColor = liveColor;
     this.deadColor = deadColor;
+    
     this.isAlive = isAlive;
+    
+    // Metrics
     this.survivedGenerations = 0;
   }
 
@@ -26,7 +29,7 @@ export default class Cell {
     }
 
     // Draw to context
-    context.fillRect(x, y, x + this.width, y + this.height);
+    context.fillRect(this.x, this.y, this.x + this.width, this.y + this.height);
   }
 
   // Kill the cell >:)
