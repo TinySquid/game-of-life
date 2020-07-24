@@ -1,7 +1,7 @@
 /**
  * A cell has basic attributes like width, height, position, colors for living state & deadstate.
  */
-import { context } from "./context";
+import { context } from "./canvas";
 
 export default class Cell {
   constructor(width, height, x, y, liveColor, deadColor, isAlive = false) {

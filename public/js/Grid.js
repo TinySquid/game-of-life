@@ -5,7 +5,7 @@
  */
 
 import Cell from "./Cell.js";
-import { context } from "./context";
+import { context } from "./canvas";
 
 export default class Grid {
   constructor(preset) {
@@ -134,6 +134,7 @@ export default class Grid {
   }
 
   getCellAtIndex(x, y) {
+    // Return cell at index
     return this.state[y][x];
   }
 
@@ -143,12 +144,10 @@ export default class Grid {
     the canvas and the grid cell width / height.
     */
 
-    // Convert mouse coord to grid cell coords
+    // Convert mouse coord to grid cell indexes
     const baseX = Math.floor(x / this.cellWidth);
     const baseY = Math.floor(y / this.cellHeight);
 
-    // Get the cell at state column and row index
-    console.log(this.state[baseY][baseX]);
     return this.state[baseY][baseX];
   }
 }
