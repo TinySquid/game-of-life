@@ -15,6 +15,7 @@
 
         <!-- Middle section -->
         <section class="middle-container">
+          <!-- Game Content -->
           <div class="game-container">
             <h2 id="generation-counter">Generation: 0</h2>
 
@@ -23,7 +24,7 @@
               <canvas id="canvas" width="400" height="400"></canvas>
             </div>
 
-            <!-- Game Controls Row -->
+            <!-- Game Controls -->
             <div class="controls">
               <button id="play">Play</button>
               <button id="pause">Pause</button>
@@ -34,22 +35,47 @@
 
           <!-- Presets Column -->
           <div class="presets">
-            <img src="" alt="" />
-          </div>
-
-          <!-- Rules Section -->
-          <div class="rules">
-            <h2>Rules</h2>
-            <ol>
-              <li>Any live cell with two or three live neighbours survives.</li>
-              <li>Any dead cell with three live neighbours becomes a live cell.</li>
-              <li>All other live cells die in the next generation. Similarly, all other dead cells stay dead.</li>
-            </ol>
+            <h3>Presets</h3>
+            <ul>
+              <li>
+                <img src="img/ants.gif" alt="Ants" />
+                <button>Ants</button>
+              </li>
+              <li>
+                <img src="img/pulsar.gif" alt="Pulsar" />
+                <button>Pulsar</button>
+              </li>
+              <li>
+                <img src="img/tubber.gif" alt="Tubber" />
+                <button>Tubber</button>
+              </li>
+              <li>
+                <img src="img/tumbler.gif" alt="Tumbler" />
+                <button>Tumbler</button>
+              </li>
+              <li>
+                <img src="img/blinker-ship.gif" alt="Blinker Ship" />
+                <button>Blinker Ship</button>
+              </li>
+              <li>
+                <img src="img/star.gif" alt="Star" />
+                <button>Star</button>
+              </li>
+            </ul>
           </div>
         </section>
         <!-- Bottom Section -->
         <section class="bottom-container">
-          <!-- <div> -->
+          <!-- Rules -->
+          <div class="rules">
+            <h2>Rules</h2>
+            <ul>
+              <li>Any live cell with two or three live neighbours survives.</li>
+              <li>Any dead cell with three live neighbours becomes a live cell.</li>
+              <li>All other live cells die in the next generation. Similarly, all other dead cells stay dead.</li>
+            </ul>
+          </div>
+
           <h2>About this Algorithm</h2>
           <p>
             The Game of Life, also known simply as Life, is a cellular automaton devised by the British mathematician
