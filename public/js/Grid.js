@@ -8,16 +8,46 @@ import Cell from "./Cell.js";
 import { context } from "./canvas";
 
 export default class Grid {
-  constructor(preset) {
-    this.width = preset.gridWidth;
-    this.height = preset.gridHeight;
-
-    this.cellWidth = preset.cellWidth;
-    this.cellHeight = preset.cellHeight;
-
+  constructor(preset = null) {
     this.state = [];
 
-    // Build grid with preset
+    if (preset) {
+      this.width = preset.gridWidth;
+      this.height = preset.gridHeight;
+
+      this.cellWidth = preset.cellWidth;
+      this.cellHeight = preset.cellHeight;
+
+      this.generatePreset(preset);
+    } else {
+      this.width = 50;
+      this.height = 50;
+
+      this.cellWidth = 8;
+      this.cellHeight = 8;
+
+      this.generateRandom();
+    }
+
+    // console.log(this.cellPositions)
+    //* This will generate a grid in a JSON friendly format
+    // const gridFormat = {
+    //   width: 8,
+    //   height: 8,
+    //   liveColor: "white",
+    //   deadColor: "black",
+    //   cells: this.state.map((y) => {
+    //     return y.map((x) => {
+    //       return x.isAlive ? 1 : false;
+    //     });
+    //   }),
+    // };
+    // console.log(JSON.stringify(gridFormat));
+  }
+
+  generatePreset(preset) {
+    this.state = [];
+
     for (let y = 0; y < this.height; y++) {
       // Assemble each row
       const row = [];
@@ -38,25 +68,37 @@ export default class Grid {
       // state[y][x]
       this.state.push(row);
     }
+  }
 
-    // console.log(this.cellPositions)
-    //* This will generate a grid in a JSON friendly format
-    // const gridFormat = {
-    //   width: 8,
-    //   height: 8,
-    //   liveColor: "white",
-    //   deadColor: "black",
-    //   cells: this.state.map((y) => {
-    //     return y.map((x) => {
-    //       return x.isAlive ? 1 : false;
-    //     });
-    //   }),
-    // };
-    // console.log(JSON.stringify(gridFormat));
+  generateRandom() {
+    this.state = [];
+
+    for (let y = 0; y < this.height; y++) {
+      // Assemble each row
+      const row = [];
+      for (let x = 0; x < this.width; x++) {
+        row.push(
+          new Cell(
+            this.cellWidth,
+            this.cellHeight,
+            x * this.cellWidth,
+            y * this.cellHeight,
+            "white",
+            "black",
+            Math.floor(Math.random() * (1.4 - 0))
+          )
+        );
+      }
+      this.state.push(row);
+    }
   }
 
   update(newGridState) {
-    this.state = newGridState;
+    for (let y = 0; y < this.height; y++) {
+      for (let x = 0; x < this.width; x++) {
+        this.state[y][x].isAlive = newGridState[y][x];
+      }
+    }
   }
 
   reset() {

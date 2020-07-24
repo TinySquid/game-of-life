@@ -16,7 +16,7 @@ export default class Game {
   targetDelay (ms) -> Delay between game loop iteration
   preset -> Grid preset from JSON string
   */
-  constructor(targetDelay = 10, preset = null) {
+  constructor(targetDelay, preset = null) {
     this.generation = 0;
     this.grid = new Grid(preset);
     this.gameState = new StateMachine();
@@ -81,9 +81,11 @@ export default class Game {
         determine what cells will live / die / grow.
         Update grid with new state.
         */
-        const updatedGrid = [...this.grid.state];
+        const updatedGrid = [];
 
         for (let y = 0; y < this.grid.height; y++) {
+          const row = [];
+
           for (let x = 0; x < this.grid.width; x++) {
             // Grab ref to current cell object
             const currentCell = this.grid.getCellAtIndex(x, y);
@@ -91,18 +93,40 @@ export default class Game {
             // Get its neighbors
             const livingNeighbors = this.grid.getCellNeighbors(x, y);
 
-            // Any live cell with more than three live neighbours dies, as if by overpopulation.
-            // if (currentCell.isAlive && livingNeighbors > 3) {
-            //   // console.log("Killing cell")
-            //   updatedGrid[y][x].kill();
-            // } else if (!currentCell.isAlive && livingNeighbors === 3) {
-            //   // Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.
-            //   // console.log("Rebirthing cell")
-            //   updatedGrid[y][x].resurrect();
-            // } else {
-            //   updatedGrid[y][x].kill();
-            // }
+            /*
+            Any live cell with fewer than two live neighbours dies, as if by underpopulation.
+            Any live cell with two or three live neighbours lives on to the next generation.
+            Any live cell with more than three live neighbours dies, as if by overpopulation.
+            Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.
+
+            These rules, which compare the behavior of the automaton to real life, can be condensed into the following:
+
+            Any live cell with two or three live neighbours survives.
+            Any dead cell with three live neighbours becomes a live cell.
+            All other live cells die in the next generation. Similarly, all other dead cells stay dead.
+
+            */
+            if (currentCell.isAlive) {
+              if (livingNeighbors === 2 || livingNeighbors === 3) {
+                // Randomly change it's color because it survived
+                row.push(1);
+              } else {
+                // Underpopulation & Overpopulation rules kill the cell
+                // updatedGrid[y][x].kill();
+                row.push(0);
+              }
+            } else {
+              // Cell is dead, should it become alive next iteration?
+              if (livingNeighbors === 3) {
+                // updatedGrid[y][x].resurrect();
+                row.push(1);
+              } else {
+                // Stays dead
+                row.push(0);
+              }
+            }
           }
+          updatedGrid.push(row);
         }
 
         // Update grid with changes
