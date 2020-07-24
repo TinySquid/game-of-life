@@ -2,6 +2,7 @@
  * A cell has basic attributes like width, height, position, colors for living state & deadstate.
  */
 import { context } from "./canvas";
+import { getRandomRGB } from "./utils";
 
 export default class Cell {
   constructor(width, height, x, y, liveColor, deadColor, isAlive = false) {
@@ -23,8 +24,6 @@ export default class Cell {
   draw() {
     // Determine color by state
     if (this.isAlive) {
-      // Yay we lived another generation!
-      this.survivedGenerations++;
       context.fillStyle = this.liveColor;
     } else {
       context.fillStyle = this.deadColor;
@@ -42,5 +41,13 @@ export default class Cell {
   // CONJURATION 100
   resurrect() {
     this.isAlive = true;
+    this.survivedGenerations = 0;
+  }
+
+  // THE SHEER WILLPOWER TO SURVIVE
+  survive() {
+    // Cell gets a new color every generation it survives
+    this.liveColor = getRandomRGB();
+    this.survivedGenerations++;
   }
 }

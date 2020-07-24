@@ -5,7 +5,9 @@
  */
 
 import Cell from "./Cell.js";
+
 import { context } from "./canvas";
+import { getRandomRGB } from "./utils";
 
 export default class Grid {
   constructor(preset = null) {
@@ -20,11 +22,11 @@ export default class Grid {
 
       this.generatePreset(preset);
     } else {
-      this.width = 50;
-      this.height = 50;
+      this.width = 100;
+      this.height = 100;
 
-      this.cellWidth = 8;
-      this.cellHeight = 8;
+      this.cellWidth = 4;
+      this.cellHeight = 4;
 
       this.generateRandom();
     }
@@ -83,7 +85,7 @@ export default class Grid {
             this.cellHeight,
             x * this.cellWidth,
             y * this.cellHeight,
-            "white",
+            getRandomRGB(),
             "black",
             Math.floor(Math.random() * (1.4 - 0))
           )
@@ -96,7 +98,14 @@ export default class Grid {
   update(newGridState) {
     for (let y = 0; y < this.height; y++) {
       for (let x = 0; x < this.width; x++) {
-        this.state[y][x].isAlive = newGridState[y][x];
+        // Determine if a cell was already alive, so that way we can inc generationsSurvived for it.
+        if (this.state[y][x].isAlive && newGridState[y][x] === 1) {
+          this.state[y][x].survive();
+        } else if (newGridState[y][x] === 1) {
+          this.state[y][x].resurrect();
+        } else {
+          this.state[y][x].kill();
+        }
       }
     }
   }

@@ -5,7 +5,7 @@ import preset from "./presets.js";
 
 // Create game instance
 // targetDelay is how fast the iterations will be rendered in ms
-const gameOfLife = new Game(100);
+const gameOfLife = new Game(5);
 
 // Control buttons
 const playBtn = document.getElementById("play");
