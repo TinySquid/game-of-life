@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Conway's Game of Life</title>
 
-    <link rel="stylesheet" type="text/css" href="css/main.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&family=Roboto+Slab&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="./scss/index.scss" />
   </head>
   <body>
     <main>
@@ -13,57 +14,80 @@
       <div class="container">
         <h1 class="title">Conway's Game of Life</h1>
 
-        <!-- Middle section -->
-        <section class="middle-container">
-          <!-- Game Content -->
-          <div class="game-container">
-            <h2 id="generation-counter">Generation: 0</h2>
-
-            <!-- Game Canvas -->
-            <div class="canvas-container">
-              <canvas id="canvas" width="400" height="400"></canvas>
-            </div>
-
-            <!-- Game Controls -->
-            <div class="controls">
-              <button id="play">Play</button>
-              <button id="pause">Pause</button>
-              <button id="stop">Stop</button>
-              <button id="clear">Clear</button>
-            </div>
+        <!-- Game Content -->
+        <div class="game">
+          <div class="game__generation">
+            <h2 id="game__generation-counter">Generation: 0</h2>
+            <h2 id="game__generation-population">Population: 0</h2>
+            <h2 id="game__generation-density">Density: 0%</h2>
           </div>
 
-          <!-- Presets Column -->
-          <div class="presets">
-            <h3>Presets</h3>
-            <ul>
-              <li>
-                <img src="img/ants.gif" alt="Ants" />
-                <button>Ants</button>
-              </li>
-              <li>
-                <img src="img/pulsar.gif" alt="Pulsar" />
-                <button>Pulsar</button>
-              </li>
-              <li>
-                <img src="img/tubber.gif" alt="Tubber" />
-                <button>Tubber</button>
-              </li>
-              <li>
-                <img src="img/tumbler.gif" alt="Tumbler" />
-                <button>Tumbler</button>
-              </li>
-              <li>
-                <img src="img/blinker-ship.gif" alt="Blinker Ship" />
-                <button>Blinker Ship</button>
-              </li>
-              <li>
-                <img src="img/star.gif" alt="Star" />
-                <button>Star</button>
-              </li>
-            </ul>
+          <!-- Game Canvas -->
+          <canvas id="game__canvas" width="600" height="600"></canvas>
+
+          <!-- Game Controls -->
+          <div class="game__controls">
+            <h2>Game Controls</h2>
+            <div class="game__controls-buttons">
+              <button id="play-btn">Play</button>
+              <button id="pause-btn">Pause</button>
+              <button id="stop-btn">Stop</button>
+              <button id="clear-btn">Clear</button>
+            </div>
+
+            <div class="game__controls-sizing">
+              <label for="">Grid Size</label>
+              <input type="number" value="100" id="grid-size-input" />
+
+              <label for="">Cell Size</label>
+              <input type="number" value="6" id="cell-size-input" />
+
+              <button id="adjust-game-size-btn" class="btn">Change Sizing</button>
+            </div>
+
+            <div class="game__controls-options">
+              <label for="random-colors-check">Enable Random Colors?</label>
+              <input type="checkbox" id="random-colors-check" checked />
+
+              <label for="custom-color">Custom Living Cell Color</label>
+              <input type="color" id="custom-color-living-input" value="#ffffff" />
+
+              <label for="custom-color">Custom Dead Cell Color</label>
+              <input type="color" id="custom-color-dead-input" value="#ffffff" />
+            </div>
           </div>
-        </section>
+        </div>
+
+        <!-- Presets Column -->
+        <div class="presets">
+          <h3>Presets</h3>
+          <ul>
+            <li>
+              <img src="img/ants.gif" alt="Ants" />
+              <button>Ants</button>
+            </li>
+            <li>
+              <img src="img/pulsar.gif" alt="Pulsar" />
+              <button>Pulsar</button>
+            </li>
+            <li>
+              <img src="img/tubber.gif" alt="Tubber" />
+              <button>Tubber</button>
+            </li>
+            <li>
+              <img src="img/tumbler.gif" alt="Tumbler" />
+              <button>Tumbler</button>
+            </li>
+            <li>
+              <img src="img/blinker-ship.gif" alt="Blinker Ship" />
+              <button>Blinker Ship</button>
+            </li>
+            <li>
+              <img src="img/star.gif" alt="Star" />
+              <button>Star</button>
+            </li>
+          </ul>
+        </div>
         <!-- Bottom Section -->
         <section class="bottom-container">
           <!-- Rules -->
@@ -92,7 +116,7 @@
             >Built by Michael Nunes |
             <a
               href="https://github.com/TinySquid/game-of-life"
-              class="repo-source"
+              class="source__repo"
               target="_blank"
               rel="noopener noreferrer"
               >Github Repository</a

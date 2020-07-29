@@ -1,0 +1,32 @@
+@import "./defaults/reset";
+@import "./defaults/normalize";
+@import "./defaults/typography";
+
+// Breakpoints and vars
+@import "./responsive";
+@import "./variables";
+
+// Components
+@import "./game/game";
+
+html {
+  background-color: $site-background;
+  font-size: 10px;
+}
+
+body {
+  font-size: 1.6rem;
+}
+
+.container {
+  // self
+  margin: 0 auto;
+  width: 75%;
+
+  // order
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  border: 1px solid black;
+}

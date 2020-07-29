@@ -1,0 +1,17 @@
+.title {
+  font-size: 4rem;
+  font-style: italic;
+}
+
+.game {
+  text-align: center;
+  padding: 1rem;
+}
+
+.game__controls {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  margin-top: 2rem;
+  padding: 1rem;
+}
