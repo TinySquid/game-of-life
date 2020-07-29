@@ -58,8 +58,10 @@ export default class Game {
     this.gameState.transitionTo(GAME_STATE.PLAYING);
   }
 
-  stop() {
+  reset() {
     this.gameState.transitionTo(GAME_STATE.STOPPED);
+
+    this.grid = new Grid(null);
   }
 
   clear() {
@@ -141,8 +143,6 @@ export default class Game {
         break;
       }
       case GAME_STATE.STOPPED: {
-        this.grid.reset();
-
         this.generation = 0;
 
         this.gameState.transitionTo(GAME_STATE.IDLE);
