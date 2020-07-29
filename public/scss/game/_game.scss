@@ -8,6 +8,21 @@
   padding: 1rem;
 }
 
+.game__generation {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  h2 {
+    font-size: 2rem;
+    padding: 1rem;
+  }
+}
+
+.game__generation-chart-btn {
+  margin: 0.5rem;
+}
+
 .game__controls {
   display: flex;
   flex-wrap: wrap;
