@@ -27,15 +27,18 @@
 
           <!-- Game Controls -->
           <div class="game__controls">
-            <h2>Game Controls</h2>
             <div class="game__controls-buttons">
+              <h2>Game Controls</h2>
               <button id="play-btn">Play</button>
               <button id="pause-btn">Pause</button>
-              <button id="stop-btn">Stop</button>
+              <button id="reset-btn">Reset</button>
               <button id="clear-btn">Clear</button>
+              <button id="save-btn">Save</button>
+              <button id="load-btn">Load</button>
             </div>
 
             <div class="game__controls-sizing">
+              <h2>Grid & Cell Sizing</h2>
               <label for="">Grid Size</label>
               <input type="number" value="100" id="grid-size-input" />
 
@@ -46,14 +49,16 @@
             </div>
 
             <div class="game__controls-options">
+              <h2>Cell Color Options</h2>
+
               <label for="random-colors-check">Enable Random Colors?</label>
               <input type="checkbox" id="random-colors-check" checked />
 
               <label for="custom-color">Custom Living Cell Color</label>
-              <input type="color" id="custom-color-living-input" value="#ffffff" />
+              <input type="color" id="custom-color-living-input" value="#ffffff" disabled />
 
               <label for="custom-color">Custom Dead Cell Color</label>
-              <input type="color" id="custom-color-dead-input" value="#ffffff" />
+              <input type="color" id="custom-color-dead-input" value="#000000" disabled />
             </div>
           </div>
         </div>
