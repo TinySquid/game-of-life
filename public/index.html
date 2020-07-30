@@ -74,17 +74,17 @@
               <!-- Simulation Speed -->
               <div class="game-speed">
                 <label for="game-speed-input">Simulation Speed</label>
-                <input type="range" max="2000" min="50" id="game-speed-input" />
+                <input type="range" min="0" max="10" value="5" step="1" id="game-speed-input" />
               </div>
             </div>
 
             <!-- Grid & Cell Size -->
             <div class="board-sizing">
               <label for="grid-size-input">Grid Size</label>
-              <input type="number" value="100" id="grid-size-input" />
+              <input type="number" min="10" max="200" value="100" id="grid-size-input" />
 
               <label for="cell-size-input">Cell Size</label>
-              <input type="number" value="6" id="cell-size-input" />
+              <input type="number" min="2" max="16" value="6" id="cell-size-input" />
 
               <button id="adjust-game-size-btn">Change Sizing</button>
             </div>
