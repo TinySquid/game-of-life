@@ -48,20 +48,22 @@
 
           <!-- Game Canvas and Stats Section -->
           <div class="canvas-container">
+            <!-- Game Stats -->
             <div class="game-stats">
               <h2 id="generation-counter">Generation: 0</h2>
               <h2 id="generation-population">Population: 0</h2>
               <h2 id="generation-density">Density: 0%</h2>
               <button id="chart-display-btn">Chart Display</button>
             </div>
-            <canvas id="game__canvas" width="600" height="600"></canvas>
+            <!-- Game Canvas -->
+            <canvas id="game-canvas" width="600" height="600"></canvas>
           </div>
 
-          <!-- Game Canvas -->
-
           <!-- Game Controls -->
-          <!-- <div class="game__controls">
-            <div class="game__controls-options">
+          <div class="game-controls">
+            <h2>Game Options</h2>
+            <div class="game-options">
+              <!-- Main Buttons -->
               <button id="play-btn">Play</button>
               <button id="pause-btn">Pause</button>
               <button id="reset-btn">Reset</button>
@@ -69,13 +71,15 @@
               <button id="save-btn">Save</button>
               <button id="load-btn">Load</button>
 
-              <div class="game__controls-speed">
+              <!-- Simulation Speed -->
+              <div class="game-speed">
                 <label for="game-speed-input">Simulation Speed</label>
                 <input type="range" max="2000" min="50" id="game-speed-input" />
               </div>
             </div>
 
-            <div class="game__controls-sizing">
+            <!-- Grid & Cell Size -->
+            <div class="board-sizing">
               <label for="">Grid Size</label>
               <input type="number" value="100" id="grid-size-input" />
 
@@ -95,7 +99,7 @@
               <label for="custom-color">Custom Dead Cell Color</label>
               <input type="color" id="custom-color-dead-input" value="#000000" disabled />
             </div>
-          </div> -->
+          </div>
         </div>
 
         <!-- Bottom Section -->

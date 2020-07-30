@@ -1,31 +1,11 @@
 @import "./presets";
+@import "./canvas";
+@import "./controls";
 
 .game-container {
   display: flex;
-  justify-content: center;
   flex-wrap: wrap;
-  width: 100%;
-}
-
-.canvas-container {
-  display: flex;
-  flex-direction: column;
-
-  padding: 0 1rem;
-  padding-bottom: 1rem;
-
-  margin: 0 2rem;
-
-  box-shadow: 0 0 3px 1px rgba(0, 0, 0, 0.2);
-}
-
-.game-stats {
-  display: flex;
   justify-content: center;
-  align-items: center;
-}
 
-// All children elements
-.game-stats > * {
-  margin: 0.8rem;
+  width: 100%;
 }
