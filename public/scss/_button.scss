@@ -1,0 +1,17 @@
+// Generic button styling for consistency
+button {
+  color: black;
+  border: 1px solid black;
+  background-color: white;
+
+  &:hover {
+    border: 1px solid rgb(65, 65, 65);
+    background-color: rgb(250, 250, 250);
+    cursor: pointer;
+  }
+
+  &:active {
+    border: 1px solid rgb(45, 45, 45);
+    background-color: rgb(245, 245, 245);
+  }
+}
