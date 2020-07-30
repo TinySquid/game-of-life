@@ -1,6 +1,8 @@
 @import "./presets";
 @import "./canvas";
 @import "./controls";
+@import "./sizing";
+@import "./colors";
 
 .game-container {
   display: flex;

@@ -1,0 +1,20 @@
+.cell-colors {
+  display: flex;
+  flex-direction: column;
+
+  text-align: center;
+
+  label {
+    font-size: 1.6rem;
+    margin: 0.5rem 0;
+  }
+
+  input {
+    margin: 0 auto;
+
+    width: 50%;
+    height: 25px;
+  }
+
+  margin: 1rem 0;
+}
