@@ -10,36 +10,72 @@
   </head>
   <body>
     <main>
-      <!-- Title -->
       <div class="container">
+        <!-- RIP John Horton Conway 1937 - 2020 -->
         <h1 class="title">Conway's Game of Life</h1>
 
-        <!-- Game Content -->
-        <div class="game">
-          <div class="game__generation">
-            <h2 id="game__generation-counter">Generation: 0</h2>
-            <h2 id="game__generation-population">Population: 0</h2>
-            <h2 id="game__generation-density">Density: 0%</h2>
-            <button id="chart-display-btn" class="game__generation-chart-btn">Chart Display</button>
+        <div class="game-container">
+          <!-- Presets Section -->
+          <div class="presets">
+            <h2 class="presets-title">Presets</h2>
+            <ul class="presets-list">
+              <li class="presets-list-item">
+                <img class="presets-img" src="img/ants.gif" alt="Ants" />
+                <button class="presets-btn">Ants</button>
+              </li>
+              <li class="presets-list-item">
+                <img class="presets-img" src="img/pulsar.gif" alt="Pulsar" />
+                <button class="presets-btn">Pulsar</button>
+              </li>
+              <li class="presets-list-item">
+                <img class="presets-img" src="img/tubber.gif" alt="Tubber" />
+                <button class="presets-btn">Tubber</button>
+              </li>
+              <li class="presets-list-item">
+                <img class="presets-img" src="img/tumbler.gif" alt="Tumbler" />
+                <button class="presets-btn">Tumbler</button>
+              </li>
+              <li class="presets-list-item">
+                <img class="presets-img" src="img/blinker-ship.gif" alt="Blinker Ship" />
+                <button class="presets-btn">Ship</button>
+              </li>
+              <li class="presets-list-item">
+                <img class="presets-img" src="img/star.gif" alt="Star" />
+                <button class="presets-btn">Star</button>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Game Canvas and Stats Section -->
+          <div class="canvas-container">
+            <div class="game-stats">
+              <h2 id="generation-counter">Generation: 0</h2>
+              <h2 id="generation-population">Population: 0</h2>
+              <h2 id="generation-density">Density: 0%</h2>
+              <button id="chart-display-btn">Chart Display</button>
+            </div>
+            <canvas id="game__canvas" width="600" height="600"></canvas>
           </div>
 
           <!-- Game Canvas -->
-          <canvas id="game__canvas" width="600" height="600"></canvas>
 
           <!-- Game Controls -->
-          <div class="game__controls">
-            <div class="game__controls-buttons">
-              <h2>Game Controls</h2>
+          <!-- <div class="game__controls">
+            <div class="game__controls-options">
               <button id="play-btn">Play</button>
               <button id="pause-btn">Pause</button>
               <button id="reset-btn">Reset</button>
               <button id="clear-btn">Clear</button>
               <button id="save-btn">Save</button>
               <button id="load-btn">Load</button>
+
+              <div class="game__controls-speed">
+                <label for="game-speed-input">Simulation Speed</label>
+                <input type="range" max="2000" min="50" id="game-speed-input" />
+              </div>
             </div>
 
             <div class="game__controls-sizing">
-              <h2>Grid & Cell Sizing</h2>
               <label for="">Grid Size</label>
               <input type="number" value="100" id="grid-size-input" />
 
@@ -49,9 +85,7 @@
               <button id="adjust-game-size-btn" class="btn">Change Sizing</button>
             </div>
 
-            <div class="game__controls-options">
-              <h2>Cell Color Options</h2>
-
+            <div class="game__controls-colors">
               <label for="random-colors-check">Enable Random Colors?</label>
               <input type="checkbox" id="random-colors-check" checked />
 
@@ -61,39 +95,9 @@
               <label for="custom-color">Custom Dead Cell Color</label>
               <input type="color" id="custom-color-dead-input" value="#000000" disabled />
             </div>
-          </div>
+          </div> -->
         </div>
 
-        <!-- Presets Column -->
-        <div class="presets">
-          <h3>Presets</h3>
-          <ul>
-            <li>
-              <img src="img/ants.gif" alt="Ants" />
-              <button>Ants</button>
-            </li>
-            <li>
-              <img src="img/pulsar.gif" alt="Pulsar" />
-              <button>Pulsar</button>
-            </li>
-            <li>
-              <img src="img/tubber.gif" alt="Tubber" />
-              <button>Tubber</button>
-            </li>
-            <li>
-              <img src="img/tumbler.gif" alt="Tumbler" />
-              <button>Tumbler</button>
-            </li>
-            <li>
-              <img src="img/blinker-ship.gif" alt="Blinker Ship" />
-              <button>Blinker Ship</button>
-            </li>
-            <li>
-              <img src="img/star.gif" alt="Star" />
-              <button>Star</button>
-            </li>
-          </ul>
-        </div>
         <!-- Bottom Section -->
         <section class="bottom-container">
           <!-- Rules -->

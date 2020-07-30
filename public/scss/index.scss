@@ -7,15 +7,12 @@
 @import "./variables";
 
 // Components
+@import "./button";
 @import "./game/game";
 
-html {
-  background-color: $site-background;
-  font-size: 10px;
-}
-
-body {
-  font-size: 1.6rem;
+.title {
+  font-size: 4rem;
+  font-style: italic;
 }
 
 .container {
@@ -27,4 +24,13 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  // border: 1px solid black;
+}
+
+label {
+  font-size: 1.8rem;
+  font-style: normal;
+  font-family: "Montserrat";
+  text-align: left;
 }
