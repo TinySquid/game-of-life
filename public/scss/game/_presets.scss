@@ -1,0 +1,27 @@
+.presets {
+  text-align: center;
+  box-shadow: 0 0 3px 1px rgba(0, 0, 0, 0.2);
+}
+
+.presets__title {
+  font-size: 2rem;
+}
+
+.presets-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.presets-list-item {
+  padding: 1rem;
+}
+
+.presets-img {
+  max-width: 64px;
+  max-height: 64px;
+}
+
+.presets-btn {
+  width: 100%;
+  height: 32px;
+}
