@@ -1,30 +1,23 @@
+// Game manager
 import Game from "./Game.js";
 
-// Grid "initial state" presets
-import preset from "./presets.js";
+// Game speed input
+import {speedInput} from "./IO/GameControls";
+
+// Game control setup
+import connectInputsToGame from "./IO/GameControlSetup";
+
+// Game presets
+import * as preset from "./Grid/Presets.js";
 
 // Create game instance
-// targetDelay is how fast the iterations will be rendered in ms
-const gameOfLife = new Game(5);
+const GoL = new Game();
 
-// Control buttons
-const playBtn = document.getElementById("play");
-const pauseBtn = document.getElementById("pause");
-const stopBtn = document.getElementById("stop");
-const clearBtn = document.getElementById("clear");
+// Connect inputs to game
+connectInputsToGame(GoL);
 
-playBtn.addEventListener("click", (e) => {
-  gameOfLife.play();
-});
+// Default to random grid
+GoL.usePreset(preset.random)
 
-pauseBtn.addEventListener("click", (e) => {
-  gameOfLife.pause();
-});
-
-stopBtn.addEventListener("click", (e) => {
-  gameOfLife.stop();
-});
-
-clearBtn.addEventListener("click", (e) => {
-  gameOfLife.clear();
-});
+// Run 
+GoL.start(speedInput.value * 100)

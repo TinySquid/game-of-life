@@ -10,26 +10,8 @@ import { context } from "../Canvas/GameCanvas";
 import { getRandomRGB } from "../Utils";
 
 export default class Grid {
-  constructor(preset = null) {
+  constructor() {
     this.state = [];
-
-    if (preset) {
-      this.width = preset.gridWidth;
-      this.height = preset.gridHeight;
-
-      this.cellWidth = preset.cellWidth;
-      this.cellHeight = preset.cellHeight;
-
-      this.generatePreset(preset);
-    } else {
-      this.width = 100;
-      this.height = 100;
-
-      this.cellWidth = 6;
-      this.cellHeight = 6;
-
-      this.generateRandom();
-    }
 
     // console.log(this.cellPositions)
     //* This will generate a grid in a JSON friendly format
@@ -47,33 +29,47 @@ export default class Grid {
     // console.log(JSON.stringify(gridFormat));
   }
 
-  generatePreset(preset) {
+  generateUsingPreset(preset) {
     this.state = [];
 
-    for (let y = 0; y < this.height; y++) {
-      // Assemble each row
-      const row = [];
-      for (let x = 0; x < this.width; x++) {
-        row.push(
-          new Cell(
-            this.cellWidth,
-            this.cellHeight,
-            x * this.cellWidth,
-            y * this.cellHeight,
-            preset.liveColor,
-            preset.deadColor,
-            preset.cells[y][x]
-          )
-        );
+    if (preset) {
+      this.width = preset.gridWidth;
+      this.height = preset.gridHeight;
+
+      this.cellWidth = preset.cellWidth;
+      this.cellHeight = preset.cellHeight;
+
+      for (let y = 0; y < this.height; y++) {
+        // Assemble each row
+        const row = [];
+        for (let x = 0; x < this.width; x++) {
+          row.push(
+            new Cell(
+              this.cellWidth,
+              this.cellHeight,
+              x * this.cellWidth,
+              y * this.cellHeight,
+              preset.liveColor,
+              preset.deadColor,
+              preset.cells[y][x]
+            )
+          );
+        }
+        this.state.push(row);
       }
-      // state[y] will return a row array [x]
-      // state[y][x]
-      this.state.push(row);
+    } else {
+      this.generateUsingRandom();
     }
   }
 
-  generateRandom() {
+  generateUsingRandom() {
     this.state = [];
+
+    this.width = 100;
+    this.height = 100;
+
+    this.cellWidth = 6;
+    this.cellHeight = 6;
 
     for (let y = 0; y < this.height; y++) {
       // Assemble each row
@@ -171,7 +167,6 @@ export default class Grid {
       // y is at bottom ? -> wrap to top
       pos[1] === this.height ? (pos[1] = 0) : pos[1];
 
-      // If a cell is alive
       const neighborCell = this.getCellAtIndex(pos[0], pos[1]);
 
       if (neighborCell.isAlive) {
