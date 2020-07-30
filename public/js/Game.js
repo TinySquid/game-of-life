@@ -1,15 +1,10 @@
-/**
- * The Game class handles all the logic
- * and drawing of the grid & cells.
- */
-
 // DOM Elements & Control
-import { canvas } from "./canvas";
-import { updateCounter } from "./generationCounter";
+import { canvas } from "./Canvas/GameCanvas";
+import { updateCounter } from "./IO/GameOutputs";
 
 // Game Classes
-import { StateMachine, STATE as GAME_STATE } from "./GameState.js";
-import Grid from "./Grid.js";
+import { StateMachine, STATE as GAME_STATE } from "./SM/GameState.js";
+import Grid from "./Grid/Grid.js";
 
 export default class Game {
   /* 

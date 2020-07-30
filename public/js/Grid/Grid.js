@@ -6,8 +6,8 @@
 
 import Cell from "./Cell.js";
 
-import { context } from "./canvas";
-import { getRandomRGB } from "./utils";
+import { context } from "../Canvas/GameCanvas";
+import { getRandomRGB } from "../Utils";
 
 export default class Grid {
   constructor(preset = null) {
@@ -25,8 +25,8 @@ export default class Grid {
       this.width = 100;
       this.height = 100;
 
-      this.cellWidth = 4;
-      this.cellHeight = 4;
+      this.cellWidth = 6;
+      this.cellHeight = 6;
 
       this.generateRandom();
     }
@@ -87,7 +87,7 @@ export default class Grid {
             y * this.cellHeight,
             getRandomRGB(),
             "black",
-            Math.floor(Math.random() * (1.4 - 0))
+            Math.floor(Math.random() * 1.4)
           )
         );
       }

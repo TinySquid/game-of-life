@@ -1,8 +1,8 @@
 /**
  * A cell has basic attributes like width, height, position, colors for living state & deadstate.
  */
-import { context } from "./canvas";
-import { getRandomRGB } from "./utils";
+import { context } from "../Canvas/GameCanvas";
+import { getRandomRGB } from "../Utils";
 
 export default class Cell {
   constructor(width, height, x, y, liveColor, deadColor, isAlive = false) {
