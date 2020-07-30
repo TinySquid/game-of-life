@@ -8,7 +8,10 @@
 
 // Components
 @import "./button";
+
+// Page Styling
 @import "./game/game";
+@import "./about/about";
 
 .title {
   font-size: 4rem;
