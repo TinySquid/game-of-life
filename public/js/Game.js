@@ -1,6 +1,7 @@
 // DOM Elements & Control
 import { canvas } from "./Canvas/GameCanvas";
 import { updateCounter } from "./IO/GameOutputs";
+import { gridSizeInput, cellSizeInput } from "./IO/GameControls";
 
 // Game Classes
 import { StateMachine, STATE as GAME_STATE } from "./SM/GameState.js";
@@ -16,6 +17,8 @@ export default class Game {
     this.gameLoopIntervalId = null;
 
     this.enableCanvasClickEvent();
+
+    this.setupEventHandlers();
   }
 
   // Kickoff the first game loop iteration
@@ -181,6 +184,16 @@ export default class Game {
 
       // Manually re-render
       this.grid.draw();
+    });
+  }
+
+  setupEventHandlers() {
+    gridSizeInput.addEventListener("change", (e) => {
+      this.generation = 0;
+    });
+
+    cellSizeInput.addEventListener("change", (e) => {
+      this.generation = 0;
     });
   }
 }
