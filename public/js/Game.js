@@ -135,10 +135,12 @@ export default class Game {
     this.grid.draw();
 
     //* All code below is just to keep us within our targetDelay
+    console.clear();
+    console.log("Iteration Time (ms):", performance.now() - t0, "Simulation Speed Target (ms)", this.simulationSpeed);
 
-    if (performance.now() - t0 < this.simulationSpeed * 100) {
+    if (performance.now() - t0 < this.simulationSpeed) {
       // Start a wait interval loop because we haven't reached targetDelay yet
-      this.gameLoopIntervalId = setInterval(this.waitLoop.bind(this, t0), 10);
+      this.gameLoopIntervalId = setInterval(this.waitLoop.bind(this, t0), 5);
     } else {
       requestAnimationFrame(this.runGameLoop.bind(this, this.simulationSpeed));
     }

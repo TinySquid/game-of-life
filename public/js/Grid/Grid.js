@@ -12,7 +12,7 @@ import {
 } from "../IO/GameControls";
 import Cell from "./Cell.js";
 
-import { context } from "../Canvas/GameCanvas";
+import { canvas, context } from "../Canvas/GameCanvas";
 import { getRandomRGB } from "../Utils";
 
 export default class Grid {
@@ -21,7 +21,19 @@ export default class Grid {
 
     this.generateUsingPreset(preset);
 
+    this.setupGridSizeEventHandlers();
+
     this.setupColorEventHandlers();
+  }
+
+  setupGridSizeEventHandlers() {
+    gridSizeInput.addEventListener("change", (e) => {
+      this.generateUsingRandom();
+    });
+
+    cellSizeInput.addEventListener("change", (e) => {
+      this.generateUsingRandom();
+    });
   }
 
   setupColorEventHandlers() {
@@ -94,11 +106,17 @@ export default class Grid {
   generateUsingRandom() {
     this.state = [];
 
-    this.width = 100;
-    this.height = 100;
+    this.width = Number(gridSizeInput.value);
+    this.height = Number(gridSizeInput.value);
 
-    this.cellWidth = 6;
-    this.cellHeight = 6;
+    this.cellWidth = Number(cellSizeInput.value);
+    this.cellHeight = Number(cellSizeInput.value);
+
+    canvas.width = this.width * this.cellWidth;
+    canvas.height = this.height * this.cellHeight;
+
+    console.log(this.width, this.height, gridSizeInput.value);
+    console.log(this.cellWidth, this.cellHeight, cellSizeInput.value);
 
     for (let y = 0; y < this.height; y++) {
       // Assemble each row

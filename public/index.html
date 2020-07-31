@@ -56,7 +56,7 @@
               <button id="chart-display-btn">Chart Display</button>
             </div>
             <!-- Game Canvas -->
-            <canvas id="game-canvas" width="600" height="600"></canvas>
+            <canvas id="game-canvas"></canvas>
           </div>
 
           <!-- Game Controls -->
@@ -74,14 +74,14 @@
               <!-- Simulation Speed -->
               <div class="game-speed">
                 <label for="game-speed-input">Simulation Speed</label>
-                <input type="range" min="1" max="50" value="10" step="1" id="game-speed-input" />
+                <input type="range" min="10" max="1000" value="100" step="1" id="game-speed-input" />
               </div>
             </div>
 
             <!-- Grid & Cell Size -->
             <div class="board-sizing">
               <label for="grid-size-input">Grid Size</label>
-              <input type="number" min="10" max="200" value="100" id="grid-size-input" />
+              <input type="number" min="10" max="600" value="100" id="grid-size-input" />
 
               <label for="cell-size-input">Cell Size</label>
               <input type="number" min="2" max="16" value="6" id="cell-size-input" />
