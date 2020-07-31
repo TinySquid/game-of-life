@@ -1,7 +1,6 @@
 /**
  * The grid is an object that contains all the cells.
  * It has a defined width and height (in cells, not px)
- * and an initialState to support presets.
  */
 
 import Cell from "./Cell.js";
@@ -10,23 +9,10 @@ import { context } from "../Canvas/GameCanvas";
 import { getRandomRGB } from "../Utils";
 
 export default class Grid {
-  constructor() {
+  constructor(preset = null) {
     this.state = [];
 
-    // console.log(this.cellPositions)
-    //* This will generate a grid in a JSON friendly format
-    // const gridFormat = {
-    //   width: 8,
-    //   height: 8,
-    //   liveColor: "white",
-    //   deadColor: "black",
-    //   cells: this.state.map((y) => {
-    //     return y.map((x) => {
-    //       return x.isAlive ? 1 : false;
-    //     });
-    //   }),
-    // };
-    // console.log(JSON.stringify(gridFormat));
+    this.generateUsingPreset(preset);
   }
 
   generateUsingPreset(preset) {
@@ -180,7 +166,6 @@ export default class Grid {
   }
 
   getCellAtIndex(x, y) {
-    // Return cell at index
     return this.state[y][x];
   }
 

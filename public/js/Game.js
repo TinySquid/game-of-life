@@ -8,19 +8,17 @@ import Grid from "./Grid/Grid.js";
 
 export default class Game {
   constructor() {
-    // Barebones setup needs a - grid, generation counter, statemachine
+    // Barebones setup needs a - grid, generation counter, statemachine, waitLoop interval ID
     this.generation = 0;
     this.grid = new Grid();
     this.gameState = new StateMachine();
     this.gameLoopIntervalId = null;
 
-    // Setup mouse click detection on canvas so we can toggle individual cells
     this.enableCanvasClickEvent();
   }
 
+  // Kickoff the first game loop iteration
   start(targetDelay) {
-    // When using setInterval we need to use .bind to maintain reference to 'this' (game class instance)
-    // setInterval(this.runGameLoop.bind(this), targetDelay);
     requestAnimationFrame(this.runGameLoop.bind(this, targetDelay));
   }
 
@@ -40,22 +38,22 @@ export default class Game {
   reset() {
     this.gameState.transitionTo(GAME_STATE.STOPPED);
 
-    this.grid = new Grid(null);
+    // Make a new randomized grid
+    this.grid.generateUsingRandom();
   }
 
   clear() {
-    // Clear board and reset generation counter
     this.generation = 0;
 
     this.grid.reset();
   }
 
-  /* GAME LOGIC ITERATION HANDLER */
+  /* GAME LOOP  */
+  //* Won't repeat until targetDelay is reached or passed
   runGameLoop(targetDelay) {
-    // Get start time
     const t0 = performance.now();
 
-    // Game loop functionality is dynamic to the game's current state
+    // Game loop functionality is dynamic to the game's current state thanks the statemachine
     switch (this.gameState.state) {
       case GAME_STATE.PLAYING: {
         //* Run simulation step
@@ -63,6 +61,7 @@ export default class Game {
         Make a copy of the grid and run the algorithm to
         determine what cells will live / die / grow.
         Update grid with new state.
+        Wait until targetDelay
         */
         const updatedGrid = [];
 
@@ -70,10 +69,9 @@ export default class Game {
           const row = [];
 
           for (let x = 0; x < this.grid.width; x++) {
-            // Grab ref to current cell object
+            // Get cell and current living neighbors
             const currentCell = this.grid.getCellAtIndex(x, y);
 
-            // Get its neighbors
             const livingNeighbors = this.grid.getCellNeighbors(x, y);
 
             /*
@@ -91,20 +89,18 @@ export default class Game {
             */
             if (currentCell.isAlive) {
               if (livingNeighbors === 2 || livingNeighbors === 3) {
-                // Randomly change it's color because it survived
+                // Cell stays alive
                 row.push(1);
               } else {
                 // Underpopulation & Overpopulation rules kill the cell
-                // updatedGrid[y][x].kill();
                 row.push(0);
               }
             } else {
               // Cell is dead, should it become alive next iteration?
               if (livingNeighbors === 3) {
-                // updatedGrid[y][x].resurrect();
                 row.push(1);
               } else {
-                // Stays dead
+                // No :(
                 row.push(0);
               }
             }
@@ -112,7 +108,6 @@ export default class Game {
           updatedGrid.push(row);
         }
 
-        // Update grid with changes
         this.grid.update(updatedGrid);
 
         this.generation++;
@@ -120,21 +115,19 @@ export default class Game {
         break;
       }
       case GAME_STATE.PAUSED: {
-        // Nothing needs to be done here but I'm leaving it for future stuff like a "paused" menu overlay
         break;
       }
       case GAME_STATE.STOPPED: {
         this.generation = 0;
 
         this.gameState.transitionTo(GAME_STATE.IDLE);
+
         break;
       }
     }
 
-    // Update counter
     updateCounter(this.generation);
 
-    // Draw grid
     this.grid.draw();
 
     //* All code below is just to keep us within our targetDelay
@@ -156,6 +149,7 @@ export default class Game {
     }
   }
 
+  //* Enables cell toggling via mouse click on canvas
   enableCanvasClickEvent() {
     canvas.addEventListener("mousedown", (e) => {
       const rect = canvas.getBoundingClientRect();
