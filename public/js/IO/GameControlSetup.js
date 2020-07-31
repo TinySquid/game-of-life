@@ -23,7 +23,7 @@ function connectInputsToGame(GoLInstance) {
   });
 
   GameControls.speedInput.addEventListener("change", (e) => {
-    GoLInstance.setSimulationSpeed(e.target.value * 10);
+    GoLInstance.setSimulationSpeed(e.target.value * 5);
   });
 }
 
