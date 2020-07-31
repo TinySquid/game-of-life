@@ -3,6 +3,13 @@
  * It has a defined width and height (in cells, not px)
  */
 
+import {
+  gridSizeInput,
+  cellSizeInput,
+  randomColorCheckBox,
+  customColorLiving,
+  customColorDead,
+} from "../IO/GameControls";
 import Cell from "./Cell.js";
 
 import { context } from "../Canvas/GameCanvas";
@@ -13,6 +20,42 @@ export default class Grid {
     this.state = [];
 
     this.generateUsingPreset(preset);
+
+    this.setupColorEventHandlers();
+  }
+
+  setupColorEventHandlers() {
+    randomColorCheckBox.addEventListener("change", (e) => {
+      this.state.forEach((row) => {
+        row.forEach((column) => {
+          if (e.target.checked) {
+            column.setLiveColor(getRandomRGB());
+            column.setDeadColor("black");
+          } else {
+            column.setLiveColor(customColorLiving.value);
+            column.setDeadColor(customColorDead.value);
+          }
+        });
+      });
+    });
+
+    customColorLiving.addEventListener("change", (e) => {
+      this.state.forEach((row) => {
+        row.forEach((column) => {
+          column.setLiveColor(customColorLiving.value);
+          column.setDeadColor(customColorDead.value);
+        });
+      });
+    });
+
+    customColorDead.addEventListener("change", (e) => {
+      this.state.forEach((row) => {
+        row.forEach((column) => {
+          column.setLiveColor(customColorLiving.value);
+          column.setDeadColor(customColorDead.value);
+        });
+      });
+    });
   }
 
   generateUsingPreset(preset) {
@@ -67,8 +110,8 @@ export default class Grid {
             this.cellHeight,
             x * this.cellWidth,
             y * this.cellHeight,
-            getRandomRGB(),
-            "black",
+            randomColorCheckBox.checked ? getRandomRGB() : customColorLiving.value,
+            randomColorCheckBox.checked ? "black" : customColorDead.value,
             Math.floor(Math.random() * 1.4)
           )
         );

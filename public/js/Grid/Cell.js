@@ -1,6 +1,8 @@
 /**
  * A cell has basic attributes like width, height, position, colors for living state & deadstate.
  */
+
+import { randomColorCheckBox } from "../IO/GameControls";
 import { context } from "../Canvas/GameCanvas";
 import { getRandomRGB } from "../Utils";
 
@@ -32,6 +34,14 @@ export default class Cell {
     context.fillRect(this.x, this.y, this.x + this.width, this.y + this.height);
   }
 
+  setLiveColor(newColor) {
+    this.liveColor = newColor;
+  }
+
+  setDeadColor(newColor) {
+    this.deadColor = newColor;
+  }
+
   // Kill the cell >:)
   kill() {
     this.isAlive = false;
@@ -47,7 +57,10 @@ export default class Cell {
   // THE SHEER WILLPOWER TO SURVIVE
   survive() {
     // Cell gets a new color every generation it survives
-    this.liveColor = getRandomRGB();
+    if (randomColorCheckBox.checked) {
+      this.liveColor = getRandomRGB();
+    }
+
     this.survivedGenerations++;
   }
 }
