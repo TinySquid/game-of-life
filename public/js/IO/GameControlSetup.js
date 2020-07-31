@@ -21,6 +21,10 @@ function connectInputsToGame(GoLInstance) {
   GameControls.clearBtn.addEventListener("click", (e) => {
     GoLInstance.clear();
   });
+
+  GameControls.speedInput.addEventListener("change", (e) => {
+    GoLInstance.setSimulationSpeed(e.target.value * 10);
+  });
 }
 
 function setInputDefaults() {

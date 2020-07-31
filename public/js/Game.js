@@ -8,22 +8,28 @@ import Grid from "./Grid/Grid.js";
 
 export default class Game {
   constructor() {
-    // Barebones setup needs a - grid, generation counter, statemachine, waitLoop interval ID
+    // Barebones setup needs a - sim speed, grid, generation counter, statemachine, waitLoop interval ID
     this.generation = 0;
     this.grid = new Grid();
     this.gameState = new StateMachine();
+    this.simulationSpeed = 500;
     this.gameLoopIntervalId = null;
 
     this.enableCanvasClickEvent();
   }
 
   // Kickoff the first game loop iteration
-  start(targetDelay) {
-    requestAnimationFrame(this.runGameLoop.bind(this, targetDelay));
+  start(simulationSpeed) {
+    this.simulationSpeed = simulationSpeed;
+    requestAnimationFrame(this.runGameLoop.bind(this, this.simulationSpeed));
   }
 
   usePreset(preset) {
     this.grid.generateUsingPreset(preset);
+  }
+
+  setSimulationSpeed(newSpeed) {
+    this.simulationSpeed = newSpeed;
   }
 
   /* GAME CONTROLS */
@@ -49,8 +55,7 @@ export default class Game {
   }
 
   /* GAME LOOP  */
-  //* Won't repeat until targetDelay is reached or passed
-  runGameLoop(targetDelay) {
+  runGameLoop() {
     const t0 = performance.now();
 
     // Game loop functionality is dynamic to the game's current state thanks the statemachine
@@ -61,7 +66,6 @@ export default class Game {
         Make a copy of the grid and run the algorithm to
         determine what cells will live / die / grow.
         Update grid with new state.
-        Wait until targetDelay
         */
         const updatedGrid = [];
 
@@ -132,20 +136,20 @@ export default class Game {
 
     //* All code below is just to keep us within our targetDelay
 
-    if (performance.now() - t0 < targetDelay * 100) {
+    if (performance.now() - t0 < this.simulationSpeed * 100) {
       // Start a wait interval loop because we haven't reached targetDelay yet
-      this.gameLoopIntervalId = setInterval(this.waitLoop.bind(this, t0, targetDelay), 10);
+      this.gameLoopIntervalId = setInterval(this.waitLoop.bind(this, t0), 10);
     } else {
-      requestAnimationFrame(this.runGameLoop.bind(this, targetDelay));
+      requestAnimationFrame(this.runGameLoop.bind(this, this.simulationSpeed));
     }
   }
 
   //* Keeps us at or above targetDelay for game loop iteration and rendering
-  waitLoop(startTime, targetDelay) {
-    if (performance.now() - startTime >= targetDelay) {
+  waitLoop(startTime) {
+    if (performance.now() - startTime >= this.simulationSpeed) {
       // Turn off wait loop and go back to iterate game loop again
       clearInterval(this.gameLoopIntervalId);
-      requestAnimationFrame(this.runGameLoop.bind(this, targetDelay));
+      requestAnimationFrame(this.runGameLoop.bind(this, this.simulationSpeed));
     }
   }
 
@@ -172,6 +176,9 @@ export default class Game {
           }
         }
       }
+
+      // Manually re-render
+      this.grid.draw();
     });
   }
 }

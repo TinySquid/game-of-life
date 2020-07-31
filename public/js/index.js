@@ -14,4 +14,4 @@ const GoL = new Game();
 connectInputsToGame(GoL);
 
 // Run
-GoL.start(speedInput.value * 100);
+GoL.start(speedInput.value * 10);
