@@ -1,7 +1,7 @@
 // DOM Element controls
 import * as GameControls from "./GameControls";
 
-function connectInputsToGame(GoLInstance) {
+function addGameInputEventListeners(GoLInstance) {
   // Ensure default values
   setInputDefaults();
 
@@ -29,15 +29,16 @@ function connectInputsToGame(GoLInstance) {
 
 function setInputDefaults() {
   //* Set default values for inputs *//
-  GameControls.speedInput.value = 5;
-  GameControls.gridSizeInput.value = 100;
+  GameControls.speedInput.value = 100;
 
   // Set cell size initially based off client screen size
   // the game logic will set the canvas size later on.
   if (screen.width < 600 || window.innerWidth < 600) {
+    GameControls.gridSizeInput.value = 75;
     GameControls.cellSizeInput.value = 4;
   } else {
-    GameControls.cellSizeInput.value = 6;
+    GameControls.gridSizeInput.value = 100;
+    GameControls.cellSizeInput.value = 8;
   }
 
   // We want to disable the custom color inputs when we have randomColors enabled.
@@ -52,4 +53,4 @@ function setInputDefaults() {
   });
 }
 
-module.exports = connectInputsToGame;
+module.exports = addGameInputEventListeners;

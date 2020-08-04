@@ -5,13 +5,13 @@ import Game from "./Game.js";
 import { speedInput } from "./IO/GameControls";
 
 // Game control setup
-import connectInputsToGame from "./IO/GameControlSetup";
+import addGameInputEventListeners from "./IO/GameControlSetup";
 
 // Create game instance
 const GoL = new Game();
 
-// Connect inputs to game
-connectInputsToGame(GoL);
+// Setup event listeners & default settings
+addGameInputEventListeners(GoL);
 
 // Run
 GoL.start(Number(speedInput.value));
