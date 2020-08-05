@@ -9,8 +9,17 @@ import Grid from "./Grid/Grid.js";
 
 export default class Game {
   constructor() {
-    // Barebones setup needs a - sim speed, grid, generation counter, statemachine, waitLoop interval ID
+    /*
+      1. Generation counter
+      2. Grid instance
+      3. Game state
+      4. Game simulation speed
+      5. IntervalID for wait loop - Keeps iterations at or slightly above target speed
+      6. Event handlers for canvas & grid changes
+    */
+
     this.generation = 0;
+
     this.grid = new Grid();
 
     this.gameState = new StateMachine();
