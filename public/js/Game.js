@@ -1,7 +1,7 @@
 // DOM Elements & Control
 import { canvas } from "./Canvas/GameCanvas";
 import { updateCounter } from "./IO/GameOutputs";
-import { gridSizeInput, cellSizeInput } from "./IO/GameControls";
+import { speedInput, gridSizeInput, cellSizeInput } from "./IO/GameControls";
 
 // Game Classes
 import { StateMachine, STATE as GAME_STATE } from "./SM/GameState.js";
@@ -12,19 +12,19 @@ export default class Game {
     // Barebones setup needs a - sim speed, grid, generation counter, statemachine, waitLoop interval ID
     this.generation = 0;
     this.grid = new Grid();
+
     this.gameState = new StateMachine();
-    this.simulationSpeed = 500;
+
+    this.simulationSpeed = speedInput.value;
+
     this.gameLoopIntervalId = null;
 
-    this.enableCanvasClickEvent();
-
-    this.setupEventHandlers();
+    this._initEventHandlers();
   }
 
   // Kickoff the first game loop iteration
-  start(simulationSpeed) {
-    this.simulationSpeed = simulationSpeed;
-    requestAnimationFrame(this.runGameLoop.bind(this, this.simulationSpeed));
+  start() {
+    requestAnimationFrame(this.iterateGameLoop.bind(this, this.simulationSpeed));
   }
 
   usePreset(preset) {
@@ -45,50 +45,44 @@ export default class Game {
   }
 
   reset() {
-    this.gameState.transitionTo(GAME_STATE.STOPPED);
-
     // Make a new randomized grid
     this.grid.generateUsingRandom();
+
+    this.gameState.transitionTo(GAME_STATE.STOPPED);
   }
 
   clear() {
-    this.generation = 0;
-
     this.grid.reset();
+
+    this.grid.draw();
+
+    this.gameState.transitionTo(GAME_STATE.STOPPED);
   }
 
   /* GAME LOOP  */
-  runGameLoop() {
+  iterateGameLoop() {
     const t0 = performance.now();
 
-    // Game loop functionality is dynamic to the game's current state thanks the statemachine
     switch (this.gameState.state) {
       case GAME_STATE.PLAYING: {
-        //* Run simulation step
         /*
+        //* Run simulation step
         Make a copy of the grid and run the algorithm to
         determine what cells will live / die / grow.
-        Update grid with new state.
+        Update original grid with the newly derived one.
         */
+
         const updatedGrid = [];
 
         for (let y = 0; y < this.grid.height; y++) {
           const row = [];
 
           for (let x = 0; x < this.grid.width; x++) {
-            // Get cell and current living neighbors
             const currentCell = this.grid.getCellAtIndex(x, y);
 
             const livingNeighbors = this.grid.getCellNeighbors(x, y);
 
             /*
-            Any live cell with fewer than two live neighbours dies, as if by underpopulation.
-            Any live cell with two or three live neighbours lives on to the next generation.
-            Any live cell with more than three live neighbours dies, as if by overpopulation.
-            Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.
-
-            These rules, which compare the behavior of the automaton to real life, can be condensed into the following:
-
             Any live cell with two or three live neighbours survives.
             Any dead cell with three live neighbours becomes a live cell.
             All other live cells die in the next generation. Similarly, all other dead cells stay dead.
@@ -115,7 +109,9 @@ export default class Game {
           updatedGrid.push(row);
         }
 
-        this.grid.update(updatedGrid);
+        this.grid.update(updatedGrid, false);
+
+        this.grid.draw();
 
         this.generation++;
 
@@ -135,17 +131,12 @@ export default class Game {
 
     updateCounter(this.generation);
 
-    this.grid.draw();
-
     //* All code below is just to keep us within our targetDelay
-    console.clear();
-    console.log("Iteration Time (ms):", performance.now() - t0, "Simulation Speed Target (ms)", this.simulationSpeed);
-
     if (performance.now() - t0 < this.simulationSpeed) {
       // Start a wait interval loop because we haven't reached targetDelay yet
-      this.gameLoopIntervalId = setInterval(this.waitLoop.bind(this, t0), 5);
+      this.gameLoopIntervalId = setInterval(this.waitLoop.bind(this, t0), 10);
     } else {
-      requestAnimationFrame(this.runGameLoop.bind(this, this.simulationSpeed));
+      requestAnimationFrame(this.iterateGameLoop.bind(this, this.simulationSpeed));
     }
   }
 
@@ -154,20 +145,29 @@ export default class Game {
     if (performance.now() - startTime >= this.simulationSpeed) {
       // Turn off wait loop and go back to iterate game loop again
       clearInterval(this.gameLoopIntervalId);
-      requestAnimationFrame(this.runGameLoop.bind(this, this.simulationSpeed));
+      requestAnimationFrame(this.iterateGameLoop.bind(this, this.simulationSpeed));
     }
   }
 
-  //* Enables cell toggling via mouse click on canvas
-  enableCanvasClickEvent() {
+  _initEventHandlers() {
+    //* Reset generation when board / cell parameters change
+    gridSizeInput.addEventListener("change", (e) => {
+      this.generation = 0;
+    });
+
+    cellSizeInput.addEventListener("change", (e) => {
+      this.generation = 0;
+    });
+
+    //* Canvas Cell Toggle
     canvas.addEventListener("mousedown", (e) => {
       const rect = canvas.getBoundingClientRect();
 
       // Normalize mouse coords relative to canvas
-      const x = Math.floor(e.clientX - rect.left);
-      const y = Math.floor(e.clientY - rect.top);
+      const xCoord = Math.floor(e.clientX - rect.left);
+      const yCoord = Math.floor(e.clientY - rect.top);
 
-      const cell = this.grid.getCellAtCoord(x, y);
+      const cell = this.grid.getCellAtCoord(xCoord, yCoord);
 
       // Can only edit the grid when game is not in play
       if (this.gameState.state != GAME_STATE.PLAYING) {
@@ -182,18 +182,8 @@ export default class Game {
         }
       }
 
-      // Manually re-render
+      // Manually re-render entire grid
       this.grid.draw();
-    });
-  }
-
-  setupEventHandlers() {
-    gridSizeInput.addEventListener("change", (e) => {
-      this.generation = 0;
-    });
-
-    cellSizeInput.addEventListener("change", (e) => {
-      this.generation = 0;
     });
   }
 }
