@@ -33,13 +33,25 @@ function setInputDefaults() {
 
   // Set cell size initially based off client screen size
   // the game logic will set the canvas size later on.
-  if (screen.width < 600 || window.innerWidth < 600) {
-    GameControls.gridSizeInput.value = 75;
-    GameControls.cellSizeInput.value = 4;
-  } else {
-    GameControls.gridSizeInput.value = 100;
-    GameControls.cellSizeInput.value = 8;
-  }
+  // if (window.innerWidth < 1700) {
+  //   GameControls.gridSizeInput.value = 150;
+  //   GameControls.cellSizeInput.value = 4;
+  // }
+
+  // if (window.innerWidth < 1300) {
+  //   GameControls.gridSizeInput.value = 100;
+  //   GameControls.cellSizeInput.value = 4;
+  // }
+
+  // if (window.innerWidth < )
+
+  // if (screen.width < 600 || window.innerWidth < 600) {
+  //   GameControls.gridSizeInput.value = 75;
+  //   GameControls.cellSizeInput.value = 4;
+  // } else {
+  //   GameControls.gridSizeInput.value = 100;
+  //   GameControls.cellSizeInput.value = 8;
+  // }
 
   // We want to disable the custom color inputs when we have randomColors enabled.
   GameControls.randomColorCheckBox.addEventListener("click", (e) => {
