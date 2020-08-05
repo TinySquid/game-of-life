@@ -1,6 +1,9 @@
 /**
- * The grid is an object that contains all the cells.
- * It has a defined width and height (in cells, not px)
+ * The grid class maintains a 2D array of cells and provides interface methods for:
+ * 1. Cell presets
+ * 2. Drawing to canvas
+ * 3. Updating grid state
+ * 4. Helper methods for the game algorithm
  */
 
 import {
@@ -12,76 +15,95 @@ import {
 } from "../IO/GameControls";
 import Cell from "./Cell.js";
 
-import { canvas, context } from "../Canvas/GameCanvas";
+import { canvas } from "../Canvas/GameCanvas";
 import { getRandomRGB } from "../Utils";
 
 export default class Grid {
   constructor(preset = null) {
     this.state = [];
 
+    this._initEventHandlers();
+
     this.generateUsingPreset(preset);
-
-    this.setupGridSizeEventHandlers();
-
-    this.setupColorEventHandlers();
   }
 
-  setupGridSizeEventHandlers() {
-    gridSizeInput.addEventListener("change", (e) => {
+  _initEventHandlers() {
+    //* GRID & CELL INPUT HANDLERS
+    gridSizeInput.addEventListener("change", () => {
       this.generateUsingRandom();
     });
 
-    cellSizeInput.addEventListener("change", (e) => {
+    cellSizeInput.addEventListener("change", () => {
       this.generateUsingRandom();
     });
-  }
 
-  setupColorEventHandlers() {
+    //* COLOR INPUT HANDLERS
     randomColorCheckBox.addEventListener("change", (e) => {
       this.state.forEach((row) => {
-        row.forEach((column) => {
+        row.forEach((cell) => {
           if (e.target.checked) {
-            column.setLiveColor(getRandomRGB());
-            column.setDeadColor("black");
+            cell.setLiveColor(getRandomRGB());
+            cell.setDeadColor("black");
           } else {
-            column.setLiveColor(customColorLiving.value);
-            column.setDeadColor(customColorDead.value);
+            cell.setLiveColor(customColorLiving.value);
+            cell.setDeadColor(customColorDead.value);
           }
         });
       });
+
+      this.draw();
     });
 
     customColorLiving.addEventListener("change", (e) => {
       this.state.forEach((row) => {
-        row.forEach((column) => {
-          column.setLiveColor(customColorLiving.value);
-          column.setDeadColor(customColorDead.value);
+        row.forEach((cell) => {
+          cell.setLiveColor(customColorLiving.value);
+          cell.setDeadColor(customColorDead.value);
         });
       });
+
+      this.draw();
     });
 
     customColorDead.addEventListener("change", (e) => {
       this.state.forEach((row) => {
-        row.forEach((column) => {
-          column.setLiveColor(customColorLiving.value);
-          column.setDeadColor(customColorDead.value);
+        row.forEach((cell) => {
+          cell.setLiveColor(customColorLiving.value);
+          cell.setDeadColor(customColorDead.value);
         });
       });
+
+      this.draw();
     });
   }
 
   generateUsingPreset(preset) {
+    /*
+      If preset is not null:
+        1. Clear grid state
+        2. Set grid & cell parameters provided by preset
+        3. Create grid according to preset array
+      else:
+        1. Generate a random grid
+
+      Will draw new grid to canvas at the end
+    */
+
     this.state = [];
 
     if (preset) {
-      this.width = preset.gridWidth;
-      this.height = preset.gridHeight;
+      // Parameters
+      this.width = Number(preset.gridWidth);
+      this.height = Number(preset.gridHeight);
 
-      this.cellWidth = preset.cellWidth;
-      this.cellHeight = preset.cellHeight;
+      this.cellWidth = Number(preset.cellWidth);
+      this.cellHeight = Number(preset.cellHeight);
 
+      canvas.width = this.width * this.cellWidth;
+      canvas.height = this.height * this.cellHeight;
+
+      // Grid generation
       for (let y = 0; y < this.height; y++) {
-        // Assemble each row
         const row = [];
         for (let x = 0; x < this.width; x++) {
           row.push(
@@ -101,9 +123,18 @@ export default class Grid {
     } else {
       this.generateUsingRandom();
     }
+
+    this.draw();
   }
 
   generateUsingRandom() {
+    /*
+      1. Clear grid state
+      2. Build grid & cell size from input values
+      3. Size canvas accordingly
+      4. Generate a grid using math.random
+    */
+
     this.state = [];
 
     this.width = Number(gridSizeInput.value);
@@ -114,9 +145,6 @@ export default class Grid {
 
     canvas.width = this.width * this.cellWidth;
     canvas.height = this.height * this.cellHeight;
-
-    console.log(this.width, this.height, gridSizeInput.value);
-    console.log(this.cellWidth, this.cellHeight, cellSizeInput.value);
 
     for (let y = 0; y < this.height; y++) {
       // Assemble each row
@@ -129,66 +157,86 @@ export default class Grid {
             x * this.cellWidth,
             y * this.cellHeight,
             randomColorCheckBox.checked ? getRandomRGB() : customColorLiving.value,
-            randomColorCheckBox.checked ? "black" : customColorDead.value,
+            randomColorCheckBox.checked ? "#000000" : customColorDead.value,
             Math.floor(Math.random() * 1.4)
           )
         );
       }
       this.state.push(row);
     }
+
+    this.draw();
   }
 
-  update(newGridState) {
-    for (let y = 0; y < this.height; y++) {
-      for (let x = 0; x < this.width; x++) {
-        // Determine if a cell was already alive, so that way we can inc generationsSurvived for it.
-        if (this.state[y][x].isAlive && newGridState[y][x] === 1) {
-          this.state[y][x].survive();
-        } else if (newGridState[y][x] === 1) {
-          this.state[y][x].resurrect();
-        } else {
-          this.state[y][x].kill();
+  update(newGridState, draw = true) {
+    /*
+      1. Takes in a 2D array of integers representing cell state (0 -> dead, 1 -> alive)
+      2. Maps them to the cells in our grid state, killing or resurrecting the cells along the way
+      3. If second optional draw parameter is enabled, then draw the cell as well
+      4. Returns how many draw calls were made
+    */
+
+    // TODO Figure out why only drawing changed cells causes canvas to smear them across the screen :(
+
+    let updates = 0;
+
+    this.state.forEach((row, y) => {
+      row.forEach((cell, x) => {
+        // Only update cell if new state is different than current state
+        if (cell.isAlive == 1 && newGridState[y][x] != 1) {
+          cell.kill();
+          updates++;
+
+          if (draw) {
+            cell.draw();
+          }
+        } else if (cell.isAlive == 0 && newGridState[y][x] != 0) {
+          cell.resurrect();
+          updates++;
+
+          if (draw) {
+            cell.draw();
+          }
         }
-      }
-    }
+      });
+    });
+
+    return updates;
   }
 
   reset() {
-    // Clear the grid (kill all the cells)
-    this.state.forEach((col) => {
-      col.forEach((cell) => {
+    // Kills all grid cells
+    this.state.forEach((row) => {
+      row.forEach((cell) => {
         cell.kill();
       });
     });
   }
 
   draw() {
-    // For each row in each column, draw all cells
-    for (let y = 0; y < this.height; y++) {
-      for (let x = 0; x < this.width; x++) {
-        // Determine X, Y via index * cell size
-        this.state[y][x].draw(context, x * this.cellWidth, y * this.cellHeight);
-      }
-    }
+    // Draws all grid cells
+    this.state.forEach((row) => {
+      row.forEach((cell) => {
+        cell.draw();
+      });
+    });
   }
 
   getCellNeighbors(x, y) {
-    // Takes in the coord of the cell and then
-    // returns an array of each position around
-    // the cell, with 1 being a live cell, 0 dead
     /*
-    Pattern ->
-      0 1 2
-      3 s 4
-      5 6 7
-      
-      # = grid position
-      s = current cell
+      1. Takes in cell index
+      2. Finds all living cells around it (wrapping for grid borders)
+      3. Returns count
 
-      array returned follows the grid cell number 
+      Search Area Pattern ->
+        n n n
+        n c n
+        n n n
 
-      Also handles edge of map by wrapping-around
+        n = grid position
+        c = current cell
     */
+
     const searchArea = [
       [x - 1, y - 1], //Top left
       [x, y - 1], // Top middle
@@ -196,21 +244,26 @@ export default class Grid {
       [x - 1, y], // Left
       [x + 1, y], // Right
       [x - 1, y + 1], // Bottom left
-      [x, y + 1], // Bottom center
+      [x, y + 1], // Bottom middle
       [x + 1, y + 1], // Bottom right
     ];
 
-    const cellCount = searchArea.reduce((count, pos) => {
-      // Check if search pos is out of bounds and if so
-      // wrap around grid to other side
-      // pos[0] -> x, pos[1] -> y
-      // count -> Total # of living cells surrounding us
-      // x = 0 ? -> wrap to end of grid
+    const neighbors = searchArea.reduce((count, pos) => {
+      /*
+        pos[0] = cell index x, pos[1] = cell index y
+        count -> Total num of living neighbors
+        When checking cells at grid edges, wrap search pattern
+      */
+
+      // x is at beginning of grid ? -> wrap to end
       pos[0] < 0 ? (pos[0] = this.width - 1) : pos[0];
+
       // x is at end of grid ? -> wrap to beginning
       pos[0] === this.width ? (pos[0] = 0) : pos[0];
+
       // y is at top ? -> wrap to bottom
       pos[1] < 0 ? (pos[1] = this.height - 1) : pos[1];
+
       // y is at bottom ? -> wrap to top
       pos[1] === this.height ? (pos[1] = 0) : pos[1];
 
@@ -223,23 +276,24 @@ export default class Grid {
       }
     }, 0);
 
-    return cellCount;
+    return neighbors;
   }
 
-  getCellAtIndex(x, y) {
-    return this.state[y][x];
+  getCellAtIndex(cellIndexX, cellIndexY) {
+    // Simply returns cell at given x, y index
+    return this.state[cellIndexY][cellIndexX];
   }
 
-  getCellAtCoord(x, y) {
-    /* This will return the cell at the position
-    specified by the mouse x / y, normalized to
-    the canvas and the grid cell width / height.
+  getCellAtCoord(xCoord, yCoord) {
+    /*
+      1. Takes in screen coordinates
+      2. Normalizes them to a cell index
+      3. Returns cell from grid state matching that index 
     */
 
-    // Convert mouse coord to grid cell indexes
-    const baseX = Math.floor(x / this.cellWidth);
-    const baseY = Math.floor(y / this.cellHeight);
+    const cellIndexX = Math.floor(xCoord / this.cellWidth);
+    const cellIndexY = Math.floor(yCoord / this.cellHeight);
 
-    return this.state[baseY][baseX];
+    return this.state[cellIndexY][cellIndexX];
   }
 }
