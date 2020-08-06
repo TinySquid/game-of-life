@@ -18,7 +18,7 @@ import {
 import Cell from "./Cell.js";
 
 import { canvas } from "../Canvas/GameCanvas";
-import { getRandomRGB } from "../Utils";
+import { getRandomRGB } from "../Utils.js";
 
 import FileSaver from "file-saver";
 
