@@ -117,3 +117,5 @@ dist
 
 
 dest
+# Local Netlify folder
+.netlify

@@ -10,6 +10,9 @@ The universe of the Game of Life is an infinite, two-dimensional orthogonal grid
 - Any dead cell with three live neighbours becomes a live cell.
 - All other live cells die in the next generation. Similarly, all other dead cells stay dead.
 
+## Deployed App
+[Click to go to live game](https://mike-gol.netlify.app/)
+
 ## Emergent Patterns
 
 ![Example Patterns](/docs/img/patterns.gif)
