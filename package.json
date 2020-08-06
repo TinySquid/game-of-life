@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/TinySquid/game-of-life#readme",
   "dependencies": {
+    "file-saver": "^2.0.2",
     "parcel": "^1.12.4",
     "sass": "^1.26.10"
   }

@@ -12,11 +12,15 @@ import {
   randomColorCheckBox,
   customColorLiving,
   customColorDead,
+  saveBtn,
+  loadBtn,
 } from "../IO/GameControls";
 import Cell from "./Cell.js";
 
 import { canvas } from "../Canvas/GameCanvas";
 import { getRandomRGB } from "../Utils";
+
+import FileSaver from "file-saver";
 
 export default class Grid {
   constructor(preset = null) {
@@ -28,6 +32,85 @@ export default class Grid {
   }
 
   _initEventHandlers() {
+    //* GRID SAVE / LOAD HANDLERS
+    saveBtn.addEventListener("click", () => {
+      /*
+        1. Convert grid state to JSON string
+        2. Create BLOB with JSON string
+        3. Prompt save file dialog using FileSaver
+      */
+
+
+      const jsonGrid = JSON.stringify({
+        gridWidth: this.width,
+        gridHeight: this.height,
+        cellWidth: this.cellWidth,
+        cellHeight: this.cellHeight,
+        cells: [...this.state]
+      });
+
+      const fileName = "gol-custom-preset.json";
+      const fileBlob = new Blob([jsonGrid], { type: "text/plain;charset=utf-8" });
+
+      FileSaver.saveAs(fileBlob, fileName);
+    });
+
+    loadBtn.addEventListener("change", (e) => {
+      /*
+        1. Get ref to selected file from prompt
+        2. Read the file using HTML5 FileReader
+        3. After load, try and parse as JSON
+        4. Clear state and create new grid from JSON object
+      */
+      const file = e.target.files[0];
+
+      const fileReader = new FileReader();
+
+      fileReader.onload = (e) => {
+        try {
+          const loadedGrid = JSON.parse(e.target.result); 
+
+          this.state = [];
+
+          this.width = loadedGrid.gridWidth;
+          this.height = loadedGrid.gridHeight;
+          
+          this.cellWidth = loadedGrid.cellWidth;
+          this.cellHeight = loadedGrid.cellHeight;
+
+          canvas.width = this.width * this.cellWidth;
+          canvas.height = this.height * this.cellHeight;
+
+          gridSizeInput.value = this.width;
+          
+          cellSizeInput.value = this.cellWidth;
+
+          loadedGrid.cells.forEach(row => {
+            const newRow = [];
+            row.forEach(cell => {
+              newRow.push(new Cell(
+                cell.width,
+                cell.height,
+                cell.x,
+                cell.y,
+                cell.liveColor,
+                cell.deadColor,
+                cell.isAlive
+              ))
+            })
+            this.state.push(newRow);
+          })
+
+          this.draw();
+
+        } catch (error){
+          alert("Error: Could not load file")
+        }
+      }
+
+      fileReader.readAsText(file);
+    });
+
     //* GRID & CELL INPUT HANDLERS
     gridSizeInput.addEventListener("change", () => {
       this.generateUsingRandom();
