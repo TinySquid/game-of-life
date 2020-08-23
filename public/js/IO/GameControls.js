@@ -20,7 +20,10 @@ const randomColorCheckBox = document.getElementById("random-colors-check");
 const customColorLiving = document.getElementById("custom-color-living-input");
 const customColorDead = document.getElementById("custom-color-dead-input");
 
-module.exports = {
+// Presets
+const presetPulsar = document.getElementById("pulsar");
+
+export {
   // Gameplay buttons
   playBtn,
   pauseBtn,
@@ -38,4 +41,6 @@ module.exports = {
   randomColorCheckBox,
   customColorLiving,
   customColorDead,
+  // Presets,
+  presetPulsar,
 };

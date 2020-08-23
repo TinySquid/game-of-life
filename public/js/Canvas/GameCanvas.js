@@ -6,7 +6,4 @@ const canvas = document.getElementById("game-canvas");
 
 const context = canvas.getContext("2d", { alpha: false });
 
-module.exports = {
-  canvas,
-  context,
-};
+export { canvas, context };

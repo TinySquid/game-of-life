@@ -1,7 +1,8 @@
 // DOM Element controls
 import * as GameControls from "./GameControls";
+import presets from "../Presets/Presets";
 
-function addGameInputEventListeners(GoLInstance) {
+function setupInputEventListeners(GoLInstance) {
   // Ensure default values
   setInputDefaults();
 
@@ -25,33 +26,15 @@ function addGameInputEventListeners(GoLInstance) {
   GameControls.speedInput.addEventListener("change", (e) => {
     GoLInstance.setSimulationSpeed(Number(e.target.value));
   });
+
+  GameControls.presetPulsar.addEventListener("click", (e) => {
+    GoLInstance.usePreset(presets.blankPreset);
+  });
 }
 
 function setInputDefaults() {
   //* Set default values for inputs *//
   GameControls.speedInput.value = 100;
-
-  // Set cell size initially based off client screen size
-  // the game logic will set the canvas size later on.
-  // if (window.innerWidth < 1700) {
-  //   GameControls.gridSizeInput.value = 150;
-  //   GameControls.cellSizeInput.value = 4;
-  // }
-
-  // if (window.innerWidth < 1300) {
-  //   GameControls.gridSizeInput.value = 100;
-  //   GameControls.cellSizeInput.value = 4;
-  // }
-
-  // if (window.innerWidth < )
-
-  // if (screen.width < 600 || window.innerWidth < 600) {
-  //   GameControls.gridSizeInput.value = 75;
-  //   GameControls.cellSizeInput.value = 4;
-  // } else {
-  //   GameControls.gridSizeInput.value = 100;
-  //   GameControls.cellSizeInput.value = 8;
-  // }
 
   // We want to disable the custom color inputs when we have randomColors enabled.
   GameControls.randomColorCheckBox.addEventListener("click", (e) => {
@@ -65,4 +48,4 @@ function setInputDefaults() {
   });
 }
 
-module.exports = addGameInputEventListeners;
+export default setupInputEventListeners;

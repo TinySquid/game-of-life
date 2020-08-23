@@ -9,6 +9,4 @@ function getRandomRGB() {
   return "rgb(" + r + ", " + g + ", " + b + ")";
 }
 
-module.exports = {
-  getRandomRGB,
-};
+export { getRandomRGB };

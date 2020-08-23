@@ -20,28 +20,8 @@
             <h2 class="presets-title">Presets</h2>
             <ul class="presets-list">
               <li class="presets-list-item">
-                <img class="presets-img" src="img/ants.gif" alt="Ants" />
-                <button class="presets-btn">Ants</button>
-              </li>
-              <li class="presets-list-item">
                 <img class="presets-img" src="img/pulsar.gif" alt="Pulsar" />
-                <button class="presets-btn">Pulsar</button>
-              </li>
-              <li class="presets-list-item">
-                <img class="presets-img" src="img/tubber.gif" alt="Tubber" />
-                <button class="presets-btn">Tubber</button>
-              </li>
-              <li class="presets-list-item">
-                <img class="presets-img" src="img/tumbler.gif" alt="Tumbler" />
-                <button class="presets-btn">Tumbler</button>
-              </li>
-              <li class="presets-list-item">
-                <img class="presets-img" src="img/blinker-ship.gif" alt="Blinker Ship" />
-                <button class="presets-btn">Ship</button>
-              </li>
-              <li class="presets-list-item">
-                <img class="presets-img" src="img/star.gif" alt="Star" />
-                <button class="presets-btn">Star</button>
+                <button class="presets-btn" id="pulsar">Pulsar</button>
               </li>
             </ul>
           </div>
@@ -51,9 +31,9 @@
             <!-- Game Stats -->
             <div class="game-stats">
               <h2 id="generation-counter">Generation: 0</h2>
-              <h2 id="generation-population">Population: 0</h2>
-              <h2 id="generation-density">Density: 0%</h2>
-              <button id="chart-display-btn">Chart Display</button>
+              <!-- <h2 id="generation-population">Population: 0</h2> -->
+              <!-- <h2 id="generation-density">Density: 0%</h2> -->
+              <!-- <button id="chart-display-btn">Chart Display</button> -->
             </div>
             <!-- Game Canvas -->
             <canvas id="game-canvas"></canvas>
@@ -84,12 +64,10 @@
             <!-- Grid & Cell Size -->
             <div class="board-sizing">
               <label for="grid-size-input">Grid Size</label>
-              <input type="number" min="25" max="800" value="100" id="grid-size-input" />
+              <input type="number" min="25" max="800" value="50" id="grid-size-input" />
 
               <label for="cell-size-input">Cell Size</label>
-              <input type="number" min="2" max="16" value="8" id="cell-size-input" />
-
-              <button id="adjust-game-size-btn">Change Sizing</button>
+              <input type="number" min="2" max="16" value="16" id="cell-size-input" />
             </div>
 
             <!-- Cell Color Options -->

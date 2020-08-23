@@ -14,14 +14,13 @@ function updateDensity(gridState, gridSize, cellSize) {
   //TODO Implement
 }
 
-module.exports = {
+export {
   // DOM elements
   generationCounter,
   generationPopulation,
   generationDensity,
-
   // Mutators
   updateCounter,
   updatePopulation,
-  updateDensity
+  updateDensity,
 };
