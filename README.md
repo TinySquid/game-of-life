@@ -13,6 +13,12 @@ The universe of the Game of Life is an infinite, two-dimensional orthogonal grid
 ## Deployed App
 [Click to go to live game](https://mike-gol.netlify.app/)
 
-## Emergent Patterns
+## Examples of Emergent Patterns
 
 ![Example Patterns](/docs/img/patterns.gif)
+
+## Future plans
+- Get presets implemented and add a few more to play around with
+- Refactor save/load system (ultimately will require some refactoring of the Grid class as well)
+  - Maybe switch to using indexDB to store saved presets instead of saving to file?
+- Darkmode because who doesn't love it?
