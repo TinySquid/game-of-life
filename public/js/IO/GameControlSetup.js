@@ -28,13 +28,21 @@ function setupInputEventListeners(GoLInstance) {
   });
 
   GameControls.presetPulsar.addEventListener("click", (e) => {
-    GoLInstance.usePreset(presets.blankPreset);
+    GoLInstance.usePreset(presets.BLANK_PRESET);
   });
 }
 
 function setInputDefaults() {
   //* Set default values for inputs *//
   GameControls.speedInput.value = 100;
+
+  GameControls.gridSizeInput.value = 35;
+  GameControls.cellSizeInput.value = 16;
+
+  GameControls.randomColorCheckBox.checked = false;
+
+  GameControls.customColorLiving.value = "#ffffff";
+  GameControls.customColorDead.value = "#000000";
 
   // We want to disable the custom color inputs when we have randomColors enabled.
   GameControls.randomColorCheckBox.addEventListener("click", (e) => {

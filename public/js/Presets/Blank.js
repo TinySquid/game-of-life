@@ -3,10 +3,12 @@ function emptyGrid(size) {
 }
 
 const blankPreset = {
-  gridSize: 30,
+  simulationSpeed: 250,
+  gridSize: 35,
   cellSize: 16,
-  cellAliveColor: "white",
-  cellDeadColor: "black",
+  randomColors: true,
+  cellAliveColor: "#000000",
+  cellDeadColor: "#000000",
 };
 
 // Add after to get access to obj props

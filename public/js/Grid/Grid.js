@@ -23,7 +23,29 @@ export default class Grid {
     // Tracks cell state for each position on the grid
     this.state = [];
 
+    this._initEventHandlers();
+
     this.generateUsingPreset(preset);
+  }
+
+  _initEventHandlers() {
+    randomColorCheckBox.addEventListener("change", (e) => {
+      this.randomColors = e.target.checked;
+
+      this.draw();
+    });
+
+    customColorLiving.addEventListener("change", (e) => {
+      this.cellAliveColor = e.target.value;
+
+      this.draw();
+    });
+
+    customColorDead.addEventListener("change", (e) => {
+      this.cellDeadColor = e.target.value;
+
+      this.draw();
+    });
   }
 
   generateUsingPreset(preset) {

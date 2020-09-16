@@ -23,6 +23,19 @@ const customColorDead = document.getElementById("custom-color-dead-input");
 // Presets
 const presetPulsar = document.getElementById("pulsar");
 
+function overrideWithPresetValues(values) {
+  speedInput.value = values.simulationSpeed;
+
+  gridSizeInput.value = values.gridSize;
+
+  cellSizeInput.value = values.cellSize;
+
+  randomColorCheckBox.checked = values.randomColors;
+
+  customColorLiving.value = values.cellAliveColor;
+  customColorDead.value = values.cellDeadColor;
+}
+
 export {
   // Gameplay buttons
   playBtn,
@@ -41,6 +54,8 @@ export {
   randomColorCheckBox,
   customColorLiving,
   customColorDead,
-  // Presets,
+  // Presets
   presetPulsar,
+  // Function for preset usage
+  overrideWithPresetValues,
 };

@@ -1,7 +1,7 @@
 // DOM Elements & Control
 import { canvas } from "./Canvas/GameCanvas";
 import { updateCounter } from "./IO/GameOutputs";
-import { speedInput, gridSizeInput, cellSizeInput } from "./IO/GameControls";
+import { speedInput, gridSizeInput, cellSizeInput, overrideWithPresetValues } from "./IO/GameControls";
 
 // Game Classes
 import { StateMachine, STATE as GAME_STATE } from "./SM/GameState.js";
@@ -24,7 +24,7 @@ export default class Game {
 
     this.gameState = new StateMachine();
 
-    this.simulationSpeed = speedInput.value;
+    this.simulationSpeed = Number(speedInput.value);
 
     this.gameLoopIntervalId = null;
 
@@ -37,6 +37,8 @@ export default class Game {
   }
 
   usePreset(preset) {
+    overrideWithPresetValues(preset);
+
     this.grid.generateUsingPreset(preset);
   }
 
@@ -46,6 +48,8 @@ export default class Game {
 
   /* GAME CONTROLS */
   play() {
+    this.simulationSpeed = Number(speedInput.value);
+
     this.gameState.transitionTo(GAME_STATE.PLAYING);
   }
 
@@ -155,7 +159,8 @@ export default class Game {
   }
 
   _initEventHandlers() {
-    //* Reset generation when board / cell parameters change
+    //* Reset generation counter when board / cell parameters change
+    //* Grid class handles the actual updating itself
     gridSizeInput.addEventListener("change", (e) => {
       this.generation = 0;
     });
@@ -165,6 +170,7 @@ export default class Game {
     });
 
     //* Canvas Cell Toggle onClick
+    // TODO Make it so mouse click + drag will auto toggle cells as cursor moves until user releases drag
     canvas.addEventListener("mousedown", (e) => {
       // Can only edit the grid when game is not in play
       if (this.gameState.state != GAME_STATE.PLAYING) {
