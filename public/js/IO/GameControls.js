@@ -36,6 +36,17 @@ function overrideWithPresetValues(values) {
   customColorDead.value = values.cellDeadColor;
 }
 
+function getInputValuesForSave() {
+  return {
+    simulationSpeed: Number(speedInput.value),
+    gridSize: Number(gridSizeInput.value),
+    cellSize: Number(cellSizeInput.value),
+    randomColors: randomColorCheckBox.checked,
+    cellAliveColor: customColorLiving.value,
+    cellDeadColor: customColorDead.value,
+  };
+}
+
 export {
   // Gameplay buttons
   playBtn,
@@ -58,4 +69,5 @@ export {
   presetPulsar,
   // Function for preset usage
   overrideWithPresetValues,
+  getInputValuesForSave,
 };

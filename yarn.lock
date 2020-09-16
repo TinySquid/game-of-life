@@ -1953,6 +1953,11 @@ destroy@~1.0.4:
   resolved "https://registry.yarnpkg.com/destroy/-/destroy-1.0.4.tgz#978857442c44749e4206613e37946205826abd80"
   integrity sha1-l4hXRCxEdJ5CBmE+N5RiBYJqvYA=
 
+dexie@^3.0.2:
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/dexie/-/dexie-3.0.2.tgz#4b979904d739e0530b68352005f175a82633a075"
+  integrity sha512-go4FnIoAhcUiCdxutfIZRxnSaSyDgfEq+GH7N0I8nTCJbC2FmeBj+0FrETa3ln5ix+VQMOPsFeYHlgE/8SZWwQ==
+
 diffie-hellman@^5.0.0:
   version "5.0.3"
   resolved "https://registry.yarnpkg.com/diffie-hellman/-/diffie-hellman-5.0.3.tgz#40e8ee98f55a2149607146921c63e1ae5f3d2875"
@@ -4982,6 +4987,11 @@ uniqs@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/uniqs/-/uniqs-2.0.0.tgz#ffede4b36b25290696e6e165d4a59edb998e6b02"
   integrity sha1-/+3ks2slKQaW5uFl1KWe25mOawI=
+
+unique-names-generator@^4.3.1:
+  version "4.3.1"
+  resolved "https://registry.yarnpkg.com/unique-names-generator/-/unique-names-generator-4.3.1.tgz#f61ec2290b2f865894af01afb40f3e1043bb8fa2"
+  integrity sha512-oxkKrDXbwx6I5M963SdfmMH2t8n1OIfYyzoJ25BmDeETlyWAZjTbMXwIEMiQDex4lkD2pqe+9gxDJQAB2IOfDg==
 
 unquote@~1.1.1:
   version "1.1.1"
