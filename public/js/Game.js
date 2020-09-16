@@ -33,7 +33,7 @@ export default class Game {
 
   // Kickoff the first game loop iteration
   start() {
-    requestAnimationFrame(this.iterateGameLoop.bind(this, this.simulationSpeed));
+    requestAnimationFrame(this._iterateGameLoop.bind(this, this.simulationSpeed));
   }
 
   usePreset(preset) {
@@ -55,21 +55,19 @@ export default class Game {
 
   reset() {
     // Make a new randomized grid
-    this.grid.generateUsingRandom();
+    this.grid.reset();
 
     this.gameState.transitionTo(GAME_STATE.STOPPED);
   }
 
   clear() {
-    this.grid.reset();
-
-    this.grid.draw();
+    this.grid.clear();
 
     this.gameState.transitionTo(GAME_STATE.STOPPED);
   }
 
   /* GAME LOOP  */
-  iterateGameLoop() {
+  _iterateGameLoop() {
     const t0 = performance.now();
 
     switch (this.gameState.state) {
@@ -81,12 +79,12 @@ export default class Game {
         Update original grid with the newly derived one.
         */
 
-        const updatedGrid = [];
+        const nextGridState = [];
 
-        for (let y = 0; y < this.grid.height; y++) {
+        for (let y = 0; y < this.grid.gridSize; y++) {
           const row = [];
 
-          for (let x = 0; x < this.grid.width; x++) {
+          for (let x = 0; x < this.grid.gridSize; x++) {
             const currentCell = this.grid.getCellAtIndex(x, y);
 
             const livingNeighbors = this.grid.getCellNeighbors(x, y);
@@ -97,7 +95,7 @@ export default class Game {
             All other live cells die in the next generation. Similarly, all other dead cells stay dead.
 
             */
-            if (currentCell.isAlive) {
+            if (currentCell === 1) {
               if (livingNeighbors === 2 || livingNeighbors === 3) {
                 // Cell stays alive
                 row.push(1);
@@ -115,12 +113,10 @@ export default class Game {
               }
             }
           }
-          updatedGrid.push(row);
+          nextGridState.push(row);
         }
 
-        this.grid.update(updatedGrid, false);
-
-        this.grid.draw();
+        this.grid.update(nextGridState);
 
         this.generation++;
 
@@ -140,21 +136,21 @@ export default class Game {
 
     updateCounter(this.generation);
 
-    //* All code below is just to keep us within our targetDelay
+    //* Keep us within our targetDelay
     if (performance.now() - t0 < this.simulationSpeed) {
       // Start a wait interval loop because we haven't reached targetDelay yet
-      this.gameLoopIntervalId = setInterval(this.waitLoop.bind(this, t0), 10);
+      this.gameLoopIntervalId = setInterval(this._waitloop.bind(this, t0), 20);
     } else {
-      requestAnimationFrame(this.iterateGameLoop.bind(this, this.simulationSpeed));
+      requestAnimationFrame(this._iterateGameLoop.bind(this, this.simulationSpeed));
     }
   }
 
-  //* Keeps us at or above targetDelay for game loop iteration and rendering
-  waitLoop(startTime) {
+  //* Keeps us at or slightly above targetDelay for game loop iteration and rendering
+  _waitloop(startTime) {
     if (performance.now() - startTime >= this.simulationSpeed) {
       // Turn off wait loop and go back to iterate game loop again
       clearInterval(this.gameLoopIntervalId);
-      requestAnimationFrame(this.iterateGameLoop.bind(this, this.simulationSpeed));
+      requestAnimationFrame(this._iterateGameLoop.bind(this, this.simulationSpeed));
     }
   }
 
@@ -168,31 +164,24 @@ export default class Game {
       this.generation = 0;
     });
 
-    //* Canvas Cell Toggle
+    //* Canvas Cell Toggle onClick
     canvas.addEventListener("mousedown", (e) => {
-      const rect = canvas.getBoundingClientRect();
-
-      // Normalize mouse coords relative to canvas
-      const xCoord = Math.floor(e.clientX - rect.left);
-      const yCoord = Math.floor(e.clientY - rect.top);
-
-      const cell = this.grid.getCellAtCoord(xCoord, yCoord);
-
       // Can only edit the grid when game is not in play
       if (this.gameState.state != GAME_STATE.PLAYING) {
-        // Sanity check, can probably remove...
-        if (cell) {
-          // Toggle cell state
-          if (cell.isAlive) {
-            cell.kill();
-          } else {
-            cell.resurrect();
-          }
-        }
-      }
+        // Get position of canvas element
+        const rect = canvas.getBoundingClientRect();
 
-      // Manually re-render entire grid
-      this.grid.draw();
+        // Normalize mouse coords relative to canvas
+        const xCoord = Math.floor(e.clientX - rect.left);
+        const yCoord = Math.floor(e.clientY - rect.top);
+
+        // Get actual grid index of cell
+        const cellX = Math.floor(xCoord / this.grid.cellSize);
+        const cellY = Math.floor(yCoord / this.grid.cellSize);
+
+        // Flip state and redraw grid
+        this.grid.toggleCell(cellX, cellY);
+      }
     });
   }
 }

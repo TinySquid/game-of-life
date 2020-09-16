@@ -1,11 +1,8 @@
 import blankPreset from "./Blank";
 
-// a null value will make the grid randomize itself
-const randomPreset = null;
-
 const presets = {
-  blankPreset: blankPreset,
-  randomPreset: randomPreset,
+  BLANK_PRESET: blankPreset,
+  RANDOM_PRESET: null,
 };
 
 export default presets;

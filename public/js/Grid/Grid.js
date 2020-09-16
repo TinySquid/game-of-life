@@ -1,9 +1,10 @@
 /**
- * The grid class maintains a 2D array of cells and provides interface methods for:
- * 1. Cell presets
- * 2. Drawing to canvas
- * 3. Updating grid state
- * 4. Helper methods for the game algorithm
+ * The grid class maintains a 2D array of cell "states" and provides interface methods for:
+ * 1. Generating a grid from presets
+ * 2. Reset / Clear / Update / Draw methods
+ * 3. Getting individual cells and cell neighbors for the game logic to use
+ *
+ * Has event handlers for control input changes (sizing / colors)
  */
 
 import {
@@ -12,238 +13,85 @@ import {
   randomColorCheckBox,
   customColorLiving,
   customColorDead,
-  saveBtn,
-  loadBtn,
 } from "../IO/GameControls";
-import Cell from "./Cell.js";
 
-import { canvas } from "../Canvas/GameCanvas";
+import { canvas, context } from "../Canvas/GameCanvas";
 import { getRandomRGB } from "../utils.js";
-
-import FileSaver from "file-saver";
 
 export default class Grid {
   constructor(preset = null) {
+    // Tracks cell state for each position on the grid
     this.state = [];
 
-    this._initEventHandlers();
-
     this.generateUsingPreset(preset);
-  }
-
-  _initEventHandlers() {
-    //* GRID SAVE / LOAD HANDLERS
-    saveBtn.addEventListener("click", () => {
-      /*
-        1. Convert grid state to JSON string
-        2. Create BLOB with JSON string
-        3. Prompt save file dialog using FileSaver
-      */
-
-
-      const jsonGrid = JSON.stringify({
-        gridWidth: this.width,
-        gridHeight: this.height,
-        cellWidth: this.cellWidth,
-        cellHeight: this.cellHeight,
-        cells: [...this.state]
-      });
-
-      const fileName = "gol-custom-preset.json";
-      const fileBlob = new Blob([jsonGrid], { type: "text/plain;charset=utf-8" });
-
-      FileSaver.saveAs(fileBlob, fileName);
-    });
-
-    loadBtn.addEventListener("change", (e) => {
-      /*
-        1. Get ref to selected file from prompt
-        2. Read the file using HTML5 FileReader
-        3. After load, try and parse as JSON
-        4. Clear state and create new grid from JSON object
-      */
-      const file = e.target.files[0];
-
-      const fileReader = new FileReader();
-
-      fileReader.onload = (e) => {
-        try {
-          const loadedGrid = JSON.parse(e.target.result); 
-
-          this.state = [];
-
-          this.width = loadedGrid.gridWidth;
-          this.height = loadedGrid.gridHeight;
-          
-          this.cellWidth = loadedGrid.cellWidth;
-          this.cellHeight = loadedGrid.cellHeight;
-
-          canvas.width = this.width * this.cellWidth;
-          canvas.height = this.height * this.cellHeight;
-
-          gridSizeInput.value = this.width;
-          
-          cellSizeInput.value = this.cellWidth;
-
-          loadedGrid.cells.forEach(row => {
-            const newRow = [];
-            row.forEach(cell => {
-              newRow.push(new Cell(
-                cell.width,
-                cell.height,
-                cell.x,
-                cell.y,
-                cell.liveColor,
-                cell.deadColor,
-                cell.isAlive
-              ))
-            })
-            this.state.push(newRow);
-          })
-
-          this.draw();
-
-        } catch (error){
-          alert("Error: Could not load file")
-        }
-      }
-
-      fileReader.readAsText(file);
-    });
-
-    //* GRID & CELL INPUT HANDLERS
-    gridSizeInput.addEventListener("change", () => {
-      this.generateUsingRandom();
-    });
-
-    cellSizeInput.addEventListener("change", () => {
-      this.generateUsingRandom();
-    });
-
-    //* COLOR INPUT HANDLERS
-    randomColorCheckBox.addEventListener("change", (e) => {
-      this.state.forEach((row) => {
-        row.forEach((cell) => {
-          if (e.target.checked) {
-            cell.setLiveColor(getRandomRGB());
-            cell.setDeadColor("black");
-          } else {
-            cell.setLiveColor(customColorLiving.value);
-            cell.setDeadColor(customColorDead.value);
-          }
-        });
-      });
-
-      this.draw();
-    });
-
-    customColorLiving.addEventListener("change", (e) => {
-      this.state.forEach((row) => {
-        row.forEach((cell) => {
-          cell.setLiveColor(customColorLiving.value);
-          cell.setDeadColor(customColorDead.value);
-        });
-      });
-
-      this.draw();
-    });
-
-    customColorDead.addEventListener("change", (e) => {
-      this.state.forEach((row) => {
-        row.forEach((cell) => {
-          cell.setLiveColor(customColorLiving.value);
-          cell.setDeadColor(customColorDead.value);
-        });
-      });
-
-      this.draw();
-    });
   }
 
   generateUsingPreset(preset) {
     /*
       If preset is not null:
-        1. Clear grid state
-        2. Set grid & cell parameters provided by preset
-        3. Create grid according to preset array
+        1. Set grid & cell parameters provided by preset
+        2. Set grid state to preset cell array
       else:
         1. Generate a random grid
 
       Will draw new grid to canvas at the end
     */
 
-    this.state = [];
-
     if (preset) {
-      // Parameters
-      this.width = Number(preset.gridWidth);
-      this.height = Number(preset.gridHeight);
+      // Parse parameters
+      this.gridSize = preset.gridSize;
 
-      this.cellWidth = Number(preset.cellWidth);
-      this.cellHeight = Number(preset.cellHeight);
+      this.cellSize = preset.cellSize;
 
-      canvas.width = this.width * this.cellWidth;
-      canvas.height = this.height * this.cellHeight;
-
-      // Grid generation
-      for (let y = 0; y < this.height; y++) {
-        const row = [];
-        for (let x = 0; x < this.width; x++) {
-          row.push(
-            new Cell(
-              this.cellWidth,
-              this.cellHeight,
-              x * this.cellWidth,
-              y * this.cellHeight,
-              preset.liveColor,
-              preset.deadColor,
-              preset.cells[y][x]
-            )
-          );
-        }
-        this.state.push(row);
+      if (preset.randomColors) {
+        // In this case only cellDeadColor is a valid prop - cellAliveColor will be undefined
+        this.randomColors = true;
+        this.cellDeadColor = preset.cellDeadColor;
+      } else {
+        // Pull values from cellAliveColor & cellDeadColor props
+        this.randomColors = false;
+        this.cellAliveColor = preset.cellAliveColor;
+        this.cellDeadColor = preset.cellDeadColor;
       }
-    } else {
-      this.generateUsingRandom();
-    }
 
-    this.draw();
+      // Canvas sized to fit grid
+      canvas.width = canvas.height = this.gridSize * this.cellSize;
+
+      this.state = this._deepCopy(preset.grid);
+
+      this.draw();
+    } else {
+      this.generateUsingRandomPreset();
+    }
   }
 
-  generateUsingRandom() {
+  generateUsingRandomPreset() {
     /*
-      1. Clear grid state
-      2. Build grid & cell size from input values
-      3. Size canvas accordingly
-      4. Generate a grid using math.random
+      1. Build grid & cell size from input values
+      2. Size canvas accordingly
+      3. Generate a grid using math.random
+      4. Draw to canvas
     */
+
+    this.gridSize = Number(gridSizeInput.value);
+
+    this.cellSize = Number(cellSizeInput.value);
+
+    this.randomColors = false;
+
+    // Default colors
+    this.cellAliveColor = customColorLiving.value;
+    this.cellDeadColor = customColorDead.value;
+
+    canvas.width = canvas.height = this.gridSize * this.cellSize;
 
     this.state = [];
 
-    this.width = Number(gridSizeInput.value);
-    this.height = Number(gridSizeInput.value);
-
-    this.cellWidth = Number(cellSizeInput.value);
-    this.cellHeight = Number(cellSizeInput.value);
-
-    canvas.width = this.width * this.cellWidth;
-    canvas.height = this.height * this.cellHeight;
-
-    for (let y = 0; y < this.height; y++) {
-      // Assemble each row
+    // Generate grid
+    for (let y = 0; y < this.gridSize; y++) {
       const row = [];
-      for (let x = 0; x < this.width; x++) {
-        row.push(
-          new Cell(
-            this.cellWidth,
-            this.cellHeight,
-            x * this.cellWidth,
-            y * this.cellHeight,
-            randomColorCheckBox.checked ? getRandomRGB() : customColorLiving.value,
-            randomColorCheckBox.checked ? "#000000" : customColorDead.value,
-            Math.floor(Math.random() * 1.4)
-          )
-        );
+      for (let x = 0; x < this.gridSize; x++) {
+        row[x] = Math.floor(Math.random() * 1.4);
       }
       this.state.push(row);
     }
@@ -251,56 +99,43 @@ export default class Grid {
     this.draw();
   }
 
-  update(newGridState, draw = true) {
-    /*
-      1. Takes in a 2D array of integers representing cell state (0 -> dead, 1 -> alive)
-      2. Maps them to the cells in our grid state, killing or resurrecting the cells along the way
-      3. If second optional draw parameter is enabled, then draw the cell as well
-      4. Returns how many draw calls were made
-    */
+  update(grid) {
+    this.state = this._deepCopy(grid);
 
-    // TODO Figure out why only drawing changed cells causes canvas to smear them across the screen :(
-
-    let updates = 0;
-
-    this.state.forEach((row, y) => {
-      row.forEach((cell, x) => {
-        // Only update cell if new state is different than current state
-        if (cell.isAlive == 1 && newGridState[y][x] != 1) {
-          cell.kill();
-          updates++;
-
-          if (draw) {
-            cell.draw();
-          }
-        } else if (cell.isAlive == 0 && newGridState[y][x] != 0) {
-          cell.resurrect();
-          updates++;
-
-          if (draw) {
-            cell.draw();
-          }
-        }
-      });
-    });
-
-    return updates;
+    this.draw();
   }
 
   reset() {
-    // Kills all grid cells
-    this.state.forEach((row) => {
-      row.forEach((cell) => {
-        cell.kill();
-      });
-    });
+    this.generateUsingRandomPreset();
+  }
+
+  clear() {
+    this.state = [];
+
+    for (let y = 0; y < this.gridSize; y++) {
+      const row = [];
+
+      for (let x = 0; x < this.gridSize; x++) {
+        row.push(0);
+      }
+
+      this.state.push(row);
+    }
+
+    this.draw();
   }
 
   draw() {
-    // Draws all grid cells
-    this.state.forEach((row) => {
-      row.forEach((cell) => {
-        cell.draw();
+    this.state.forEach((row, y) => {
+      row.forEach((cell, x) => {
+        if (cell === 0) {
+          // Dead
+          context.fillStyle = this.cellDeadColor;
+          context.fillRect(x * this.cellSize, y * this.cellSize, this.cellSize, this.cellSize);
+        } else {
+          context.fillStyle = this.randomColors ? getRandomRGB() : this.cellAliveColor;
+          context.fillRect(x * this.cellSize, y * this.cellSize, this.cellSize, this.cellSize);
+        }
       });
     });
   }
@@ -339,44 +174,59 @@ export default class Grid {
       */
 
       // x is at beginning of grid ? -> wrap to end
-      pos[0] < 0 ? (pos[0] = this.width - 1) : pos[0];
+      pos[0] < 0 ? (pos[0] = this.gridSize - 1) : pos[0];
 
       // x is at end of grid ? -> wrap to beginning
-      pos[0] === this.width ? (pos[0] = 0) : pos[0];
+      pos[0] === this.gridSize ? (pos[0] = 0) : pos[0];
 
       // y is at top ? -> wrap to bottom
-      pos[1] < 0 ? (pos[1] = this.height - 1) : pos[1];
+      pos[1] < 0 ? (pos[1] = this.gridSize - 1) : pos[1];
 
       // y is at bottom ? -> wrap to top
-      pos[1] === this.height ? (pos[1] = 0) : pos[1];
+      pos[1] === this.gridSize ? (pos[1] = 0) : pos[1];
 
       const neighborCell = this.getCellAtIndex(pos[0], pos[1]);
 
-      if (neighborCell.isAlive) {
+      if (neighborCell === 1) {
+        // Living neighbor
         return (count += 1);
       } else {
+        // Dead neighbor
         return count + 0;
       }
     }, 0);
 
+    // Total count of living neighbors
     return neighbors;
   }
 
-  getCellAtIndex(cellIndexX, cellIndexY) {
+  getCellAtIndex(x, y) {
     // Simply returns cell at given x, y index
-    return this.state[cellIndexY][cellIndexX];
+    return this.state[y][x];
   }
 
-  getCellAtCoord(xCoord, yCoord) {
-    /*
-      1. Takes in screen coordinates
-      2. Normalizes them to a cell index
-      3. Returns cell from grid state matching that index 
-    */
+  toggleCell(x, y) {
+    // Using Number to prevent changing type to bool
+    this.state[y][x] = Number(!this.state[y][x]);
 
-    const cellIndexX = Math.floor(xCoord / this.cellWidth);
-    const cellIndexY = Math.floor(yCoord / this.cellHeight);
+    // Re-draw canvas
+    this.draw();
+  }
 
-    return this.state[cellIndexY][cellIndexX];
+  _deepCopy(grid) {
+    // Copies by value into a new array
+    const newGrid = [];
+
+    grid.forEach((gridRow) => {
+      const newRow = [];
+
+      gridRow.forEach((gridCell) => {
+        newRow.push(gridCell);
+      });
+
+      newGrid.push(newRow);
+    });
+
+    return newGrid;
   }
 }

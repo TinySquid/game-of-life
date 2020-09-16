@@ -1,17 +1,15 @@
-function emptyGrid(width, height) {
-  return new Array(width).fill(new Array(height).fill(0));
+function emptyGrid(size) {
+  return new Array(size).fill(new Array(size).fill(0));
 }
 
 const blankPreset = {
-  gridWidth: 50,
-  gridHeight: 50,
-  cellWidth: 16,
-  cellHeight: 16,
-  liveColor: "white",
-  deadColor: "black",
+  gridSize: 30,
+  cellSize: 16,
+  cellAliveColor: "white",
+  cellDeadColor: "black",
 };
 
 // Add after to get access to obj props
-blankPreset.cells = emptyGrid(blankPreset.gridWidth, blankPreset.gridHeight);
+blankPreset.grid = emptyGrid(blankPreset.gridSize);
 
 export default blankPreset;

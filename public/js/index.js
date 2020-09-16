@@ -1,9 +1,6 @@
 // Game manager
 import Game from "./Game.js";
 
-// Game speed input
-import { speedInput } from "./IO/GameControls";
-
 // Game control setup
 import setupInputEventListeners from "./IO/GameControlSetup";
 
@@ -14,4 +11,4 @@ const GoL = new Game();
 setupInputEventListeners(GoL);
 
 // Run
-GoL.start(Number(speedInput.value));
+GoL.start();
