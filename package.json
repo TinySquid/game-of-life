@@ -20,9 +20,10 @@
   "homepage": "https://github.com/TinySquid/game-of-life#readme",
   "dependencies": {
     "dexie": "^3.0.2",
-    "file-saver": "^2.0.2",
-    "parcel": "^1.12.4",
-    "sass": "^1.26.10",
     "unique-names-generator": "^4.3.1"
+  },
+  "devDependencies": {
+    "parcel-bundler": "^1.12.4",
+    "sass": "^1.26.10"
   }
 }
