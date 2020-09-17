@@ -4,7 +4,7 @@
   "description": "John Conway's \"Game of Life\" is a computer science classic from 1970. It's a program that simulates a cellular automaton, and has connections to all kinds of different aspects of computer science and nature.",
   "main": "index.js",
   "scripts": {
-    "dev": "parcel public/index.html -d dist/dev/ -p 5000 --public-url ./",
+    "dev": "parcel public/index.html -d dist/dev/ -p 5000",
     "build": "parcel build public/index.html -d dist/production --no-source-maps --public-url ./"
   },
   "repository": {
