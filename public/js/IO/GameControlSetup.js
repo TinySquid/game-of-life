@@ -114,7 +114,7 @@ function initGameInputEventListeners(gameInstance) {
 
   //* Preset listeners
   GameControls.presetPulsar.addEventListener("click", (e) => {
-    gameInstance.usePreset(presets.FAKE_RANDOM_PRESET);
+    gameInstance.usePreset(presets.PULSAR_PRESET);
   });
 }
 

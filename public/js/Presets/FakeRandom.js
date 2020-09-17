@@ -1,4 +1,4 @@
-const fakeRandom = {
+const fakeRandomPreset = {
   simulationSpeed: 250,
   gridSize: 35,
   cellSize: 16,
@@ -44,4 +44,4 @@ const fakeRandom = {
   ],
 };
 
-export default fakeRandom;
+export default fakeRandomPreset;
