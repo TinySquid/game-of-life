@@ -5,6 +5,9 @@ import * as GameControls from "./GameControls";
 import { canvas } from "../Canvas/GameCanvas";
 import { STATE as GAME_STATE } from "../SM/GameState";
 
+// Presets
+import presets from "../Presets/Presets";
+
 function initGameInputEventListeners(gameInstance) {
   // Set sim speed here
   gameInstance.simulationSpeed = GameControls.speedInput.valueAsNumber;
@@ -107,6 +110,11 @@ function initGameInputEventListeners(gameInstance) {
       // Flip state and redraw grid
       gameInstance.grid.toggleCell(cellX, cellY);
     }
+  });
+
+  //* Preset listeners
+  GameControls.presetPulsar.addEventListener("click", (e) => {
+    gameInstance.usePreset(presets.FAKE_RANDOM_PRESET);
   });
 }
 

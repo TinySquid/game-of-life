@@ -1,3 +1,6 @@
+// indexDB wrapper
+import Dexie from "dexie";
+
 // Name generator for save function
 import { uniqueNamesGenerator, colors, animals } from "unique-names-generator";
 
@@ -30,6 +33,8 @@ export default class SaveManager {
       "image/png",
       1
     );
+
+    console.log(JSON.stringify(this.gameInstance.grid.state));
   }
 
   load() {}

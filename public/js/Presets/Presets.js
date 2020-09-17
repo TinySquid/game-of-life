@@ -1,8 +1,9 @@
 import blankPreset from "./Blank";
+import fakePreset from "./FakeRandom";
 
 const presets = {
   BLANK_PRESET: blankPreset,
-  RANDOM_PRESET: null,
+  FAKE_RANDOM_PRESET: fakePreset,
 };
 
 export default presets;

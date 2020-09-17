@@ -41,11 +41,15 @@ export default class Game {
 
   // TODO move to save manager for preset handling
   usePreset(preset) {
+    if (this._gameState.state === GAME_STATE.PLAYING) this._gameState.transitionTo(GAME_STATE.PAUSED);
+
     overrideWithPresetValues(preset);
 
     this.grid.generateUsingPreset(preset);
 
     this.simulationSpeed = preset.simulationSpeed;
+
+    this.setGeneration(0);
   }
 
   get gameState() {
