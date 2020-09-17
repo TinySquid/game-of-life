@@ -36,11 +36,11 @@ function overrideWithPresetValues(values) {
   customColorDead.value = values.cellDeadColor;
 }
 
-function getInputValuesForSave() {
+function getInputValues() {
   return {
-    simulationSpeed: Number(speedInput.value),
-    gridSize: Number(gridSizeInput.value),
-    cellSize: Number(cellSizeInput.value),
+    simulationSpeed: speedInput.valueAsNumber,
+    gridSize: gridSizeInput.valueAsNumber,
+    cellSize: cellSizeInput.valueAsNumber,
     randomColors: randomColorCheckBox.checked,
     cellAliveColor: customColorLiving.value,
     cellDeadColor: customColorDead.value,
@@ -69,5 +69,5 @@ export {
   presetPulsar,
   // Function for preset usage
   overrideWithPresetValues,
-  getInputValuesForSave,
+  getInputValues,
 };

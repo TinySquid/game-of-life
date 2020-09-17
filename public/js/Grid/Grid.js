@@ -3,19 +3,10 @@
  * 1. Generating a grid from presets
  * 2. Reset / Clear / Update / Draw methods
  * 3. Getting individual cells and cell neighbors for the game logic to use
- *
- * Has event handlers for control input changes (sizing / colors)
  */
 
-import {
-  gridSizeInput,
-  cellSizeInput,
-  randomColorCheckBox,
-  customColorLiving,
-  customColorDead,
-} from "../IO/GameControls";
-
 import { canvas, context } from "../Canvas/GameCanvas";
+import { getInputValues } from "../IO/GameControls";
 import { getRandomRGB } from "../utils.js";
 
 export default class Grid {
@@ -23,29 +14,7 @@ export default class Grid {
     // Tracks cell state for each position on the grid
     this.state = [];
 
-    this._initEventHandlers();
-
     this.generateUsingPreset(preset);
-  }
-
-  _initEventHandlers() {
-    randomColorCheckBox.addEventListener("change", (e) => {
-      this.randomColors = e.target.checked;
-
-      this.draw();
-    });
-
-    customColorLiving.addEventListener("change", (e) => {
-      this.cellAliveColor = e.target.value;
-
-      this.draw();
-    });
-
-    customColorDead.addEventListener("change", (e) => {
-      this.cellDeadColor = e.target.value;
-
-      this.draw();
-    });
   }
 
   generateUsingPreset(preset) {
@@ -89,21 +58,21 @@ export default class Grid {
 
   generateUsingRandomPreset() {
     /*
-      1. Build grid & cell size from input values
-      2. Size canvas accordingly
-      3. Generate a grid using math.random
-      4. Draw to canvas
+      1. Parse values from game inputs
+      2. Generate a grid using math.random
+      3. Draw to canvas
     */
 
-    this.gridSize = Number(gridSizeInput.value);
+    const inputValues = getInputValues();
 
-    this.cellSize = Number(cellSizeInput.value);
+    this.gridSize = inputValues.gridSize;
+    this.cellSize = inputValues.cellSize;
 
-    this.randomColors = false;
+    this.randomColors = inputValues.randomColors;
 
     // Default colors
-    this.cellAliveColor = customColorLiving.value;
-    this.cellDeadColor = customColorDead.value;
+    this.cellAliveColor = inputValues.cellAliveColor;
+    this.cellDeadColor = inputValues.cellDeadColor;
 
     canvas.width = canvas.height = this.gridSize * this.cellSize;
 
@@ -235,8 +204,8 @@ export default class Grid {
     this.draw();
   }
 
+  // Gives us a new 2D array without copying references from the old one
   _deepCopy(grid) {
-    // Copies by value into a new array
     const newGrid = [];
 
     grid.forEach((gridRow) => {

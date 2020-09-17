@@ -1,39 +1,117 @@
 // DOM Element controls
 import * as GameControls from "./GameControls";
-import presets from "../Presets/Presets";
 
-function setupInputEventListeners(GoLInstance) {
-  // Ensure default values
-  setInputDefaults();
+// Needed for canvas event
+import { canvas } from "../Canvas/GameCanvas";
+import { STATE as GAME_STATE } from "../SM/GameState";
 
-  // Connect buttons and inputs events to game instance event handler methods
+function initGameInputEventListeners(gameInstance) {
+  // Set sim speed here
+  gameInstance.simulationSpeed = GameControls.speedInput.valueAsNumber;
+
+  //* Basic controls
   GameControls.playBtn.addEventListener("click", (e) => {
-    GoLInstance.play();
+    gameInstance.play();
   });
 
   GameControls.pauseBtn.addEventListener("click", (e) => {
-    GoLInstance.pause();
+    gameInstance.pause();
   });
 
   GameControls.resetBtn.addEventListener("click", (e) => {
-    GoLInstance.reset();
+    gameInstance.reset();
   });
 
   GameControls.clearBtn.addEventListener("click", (e) => {
-    GoLInstance.clear();
+    gameInstance.clear();
   });
 
+  //* Events for the save manager
+  GameControls.saveBtn.addEventListener("click", (e) => {
+    gameInstance.saveManager.save();
+  });
+
+  GameControls.loadBtn.addEventListener("click", (e) => {
+    gameInstance.saveManager.load();
+  });
+
+  //* Simulation speed slider (values in ms)
   GameControls.speedInput.addEventListener("change", (e) => {
-    GoLInstance.setSimulationSpeed(Number(e.target.value));
+    gameInstance.simulationSpeed = e.target.valueAsNumber;
   });
 
-  GameControls.presetPulsar.addEventListener("click", (e) => {
-    GoLInstance.usePreset(presets.BLANK_PRESET);
+  //* Handle size updates and regen board on change
+  GameControls.gridSizeInput.addEventListener("change", (e) => {
+    if (gameInstance.gameState === GAME_STATE.PLAYING) gameInstance.pause();
+
+    gameInstance.setGeneration(0);
+
+    gameInstance.grid.generateUsingRandomPreset();
+  });
+
+  GameControls.cellSizeInput.addEventListener("change", (e) => {
+    if (gameInstance.gameState === GAME_STATE.PLAYING) gameInstance.pause();
+
+    gameInstance.setGeneration(0);
+
+    gameInstance.grid.generateUsingRandomPreset();
+  });
+
+  //* We want to disable the custom color inputs when we have randomColors enabled.
+  GameControls.randomColorCheckBox.addEventListener("click", (e) => {
+    // Color Inputs
+    if (e.target.checked) {
+      GameControls.customColorLiving.disabled = true;
+      GameControls.customColorDead.disabled = true;
+    } else {
+      GameControls.customColorLiving.disabled = false;
+      GameControls.customColorDead.disabled = false;
+    }
+
+    // Send update to grid
+    gameInstance.grid.randomColors = e.target.checked;
+
+    // Redraw cells
+    gameInstance.grid.draw();
+  });
+
+  //* Redraw cells on color input change
+  GameControls.customColorLiving.addEventListener("change", (e) => {
+    gameInstance.grid.cellAliveColor = e.target.value;
+
+    gameInstance.grid.draw();
+  });
+
+  GameControls.customColorDead.addEventListener("change", (e) => {
+    gameInstance.grid.cellDeadColor = e.target.value;
+
+    gameInstance.grid.draw();
+  });
+
+  //* Canvas Cell Toggle onClick
+  // TODO Make it so mouse click + drag will auto toggle cells as cursor moves until user releases drag
+  canvas.addEventListener("mousedown", (e) => {
+    // Can only edit the grid when game is not in play
+    if (gameInstance.gameState != GAME_STATE.PLAYING) {
+      // Get position of canvas element
+      const rect = canvas.getBoundingClientRect();
+
+      // Normalize mouse coords relative to canvas
+      const xCoord = Math.floor(e.clientX - rect.left);
+      const yCoord = Math.floor(e.clientY - rect.top);
+
+      // Get actual grid index of cell
+      const cellX = Math.floor(xCoord / gameInstance.grid.cellSize);
+      const cellY = Math.floor(yCoord / gameInstance.grid.cellSize);
+
+      // Flip state and redraw grid
+      gameInstance.grid.toggleCell(cellX, cellY);
+    }
   });
 }
 
-function setInputDefaults() {
-  //* Set default values for inputs *//
+function setGameInputDefaults() {
+  //* Set default values for game inputs *//
   GameControls.speedInput.value = 100;
 
   GameControls.gridSizeInput.value = 35;
@@ -43,17 +121,6 @@ function setInputDefaults() {
 
   GameControls.customColorLiving.value = "#ffffff";
   GameControls.customColorDead.value = "#000000";
-
-  // We want to disable the custom color inputs when we have randomColors enabled.
-  GameControls.randomColorCheckBox.addEventListener("click", (e) => {
-    if (e.target.checked) {
-      GameControls.customColorLiving.disabled = true;
-      GameControls.customColorDead.disabled = true;
-    } else {
-      GameControls.customColorLiving.disabled = false;
-      GameControls.customColorDead.disabled = false;
-    }
-  });
 }
 
-export default setupInputEventListeners;
+export { initGameInputEventListeners, setGameInputDefaults };
