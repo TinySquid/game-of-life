@@ -34,3 +34,4 @@ B. If you want to build the app then use `yarn build` or `npm run build`. The re
 - ~~Refactor save/load system (ultimately will require some refactoring of the Grid class as well)~~ -> Done!
   - ~~Maybe switch to using indexDB to store saved presets instead of saving to file?~~ -> Done! (Using Dexie)
 - Darkmode because who doesn't love it?
+- Refactor styling and make app mobile friendly...
