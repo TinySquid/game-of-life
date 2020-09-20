@@ -24,6 +24,17 @@ A. If you want to run in dev mode (live server + watcher) then use `yarn dev` or
 
 B. If you want to build the app then use `yarn build` or `npm run build`. The resulting build will be in the `/dist/production` folder.
 
+## GIF Showcase
+
+Showing a couple of the features (color changing, reset, custom drawing with mouse)
+![Demo of gameplay](/docs/img/presentation-a.gif)
+
+Demo of the save / load system
+![Demo of the save / load mechanic](/docs/img/presentation-b.gif)
+
+300 x 300 grid of 2x2 cells with some decent performance (algorithm is still O(n^2) currently)
+![Demo of large board & small cell size](/docs/img/presentation-c.gif)
+
 ## Examples of Emergent Patterns
 
 ![Example Patterns](/docs/img/patterns.gif)
@@ -35,3 +46,4 @@ B. If you want to build the app then use `yarn build` or `npm run build`. The re
   - ~~Maybe switch to using indexDB to store saved presets instead of saving to file?~~ -> Done! (Using Dexie)
 - Darkmode because who doesn't love it?
 - Refactor styling and make app mobile friendly...
+- Refactor logic to be O(n) where n is the number of "changed" cells only. Right now it bruteforces the whole grid O(n^2). Previous attempts at re-rendering changed cells only caused weird canvas bugs that made cells stretch across the screen for some reason.
