@@ -1,0 +1,127 @@
+/* The Modal (background) */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+  position: relative;
+  width: 20%;
+
+  background-color: #fefefe;
+
+  padding: 0;
+  margin: auto;
+  border: 1px solid #888;
+
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+
+  // Dropdown animation
+  animation-name: drop-modal;
+  animation-duration: 0.4s;
+}
+
+/* Add Animation */
+@keyframes drop-modal {
+  from {
+    top: -300px;
+    opacity: 0;
+  }
+  to {
+    top: 0;
+    opacity: 1;
+  }
+}
+
+/* The Close Button */
+.close-icon {
+  color: white;
+  font-size: 28px;
+  font-weight: bold;
+
+  // BRUH
+  margin-top: 2px;
+  padding: 0 1rem;
+}
+
+.close-icon:hover,
+.close-icon:focus {
+  color: rgba(0, 0, 0, 0.5);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+
+  padding: 1rem 0;
+  background-color: #0380d3;
+  color: white;
+}
+
+.modal-body {
+  display: flex;
+  flex-direction: column;
+
+  padding: 0.5rem;
+}
+
+.preset-card {
+  display: grid;
+  grid-template-columns: 20% 60% 14%;
+  grid-template-rows: 1fr;
+  grid-column-gap: 3%;
+  grid-row-gap: 0;
+
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.5);
+}
+
+.preset-card:hover,
+.preset-card:focus {
+  cursor: pointer;
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.preset-img {
+  width: 64px;
+  height: 64px;
+}
+
+.preset-delete {
+  font-size: 2rem;
+  font-weight: bold;
+
+  justify-self: end;
+}
+
+.preset-delete:hover,
+.preset-delete:focus {
+  cursor: pointer;
+  color: rgba(0, 0, 0, 0.8);
+}
+
+.preset-title {
+  font-size: 2.4rem;
+
+  padding: 0;
+  margin: 0;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+
+  padding: 1rem;
+}

@@ -8,6 +8,11 @@ const clearBtn = document.getElementById("clear-btn");
 const saveBtn = document.getElementById("save-btn");
 const loadBtn = document.getElementById("load-btn");
 
+// Preset Modal Elements
+const presetModal = document.getElementsByClassName("modal")[0];
+const presetModalBody = document.getElementsByClassName("modal-body")[0];
+const presetModalCloseElements = document.getElementsByClassName("close");
+
 // Game Simulation Speed Slider
 const speedInput = document.getElementById("game-speed-input");
 
@@ -56,6 +61,10 @@ export {
   // Save / Load
   saveBtn,
   loadBtn,
+  // Modal
+  presetModal,
+  presetModalBody,
+  presetModalCloseElements,
   // Sim Speed
   speedInput,
   // Grid / Cell Sizing

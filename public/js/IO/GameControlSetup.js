@@ -35,7 +35,7 @@ function initGameInputEventListeners(gameInstance) {
   });
 
   GameControls.loadBtn.addEventListener("click", (e) => {
-    gameInstance.saveManager.load();
+    gameInstance.saveManager.openModal();
   });
 
   //* Simulation speed slider (values in ms)

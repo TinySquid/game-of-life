@@ -1,6 +1,3 @@
-// indexDB wrapper
-import Dexie from "dexie";
-
 // Name generator for save function
 import { uniqueNamesGenerator, colors, animals } from "unique-names-generator";
 
@@ -8,12 +5,27 @@ import { uniqueNamesGenerator, colors, animals } from "unique-names-generator";
 import { canvas } from "../Canvas/GameCanvas";
 
 // Input values to save
-import { getInputValues } from "../IO/GameControls";
+import { presetModal, presetModalBody, presetModalCloseElements, loadBtn, getInputValues } from "../IO/GameControls";
+
+// Database funcs
+import indexDB from "./db";
 
 export default class SaveManager {
   constructor(gameInstance) {
     // Will pull grid from game class instance
     this.gameInstance = gameInstance;
+
+    // Close modal when clicking outside it
+    window.addEventListener("click", (e) => {
+      if (e.target === presetModal) presetModal.style.display = "none";
+    });
+
+    // Close modal
+    for (const element of presetModalCloseElements) {
+      element.addEventListener("click", (e) => {
+        presetModal.style.display = "none";
+      });
+    }
   }
 
   save() {
@@ -21,11 +33,13 @@ export default class SaveManager {
 
     const inputValues = getInputValues();
 
+    // Render canvas as image to be used as a thumbnail later
     canvas.toBlob(
       (blob) => {
-        console.log({
+        // Store preset and image into db
+        indexDB.presets.put({
           name: saveName,
-          thumbnail: URL.createObjectURL(blob),
+          thumbnail: blob,
           ...inputValues,
           grid: this.gameInstance.grid.state,
         });
@@ -34,10 +48,93 @@ export default class SaveManager {
       1
     );
 
-    console.log(JSON.stringify(this.gameInstance.grid.state));
+    alert(`Custom preset saved as ${saveName}!`);
   }
 
-  load() {}
+  // Load a clicked preset
+  load(preset) {
+    presetModal.style.display = "none";
 
-  delete() {}
+    this.gameInstance.usePreset(preset);
+  }
+
+  // Delete a trashed preset
+  delete(id) {
+    indexDB.presets
+      .delete(id)
+      .then(() => {
+        this.getSavedPresets();
+      })
+      .catch((error) => {
+        alert(`An error occured while trying to delete preset: ${error}`);
+      });
+  }
+
+  // Used by load button to prompt with modal
+  openModal() {
+    presetModal.style.display = "block";
+
+    this.getSavedPresets();
+  }
+
+  // Returns an HTML card for each preset saved in the DB
+  getSavedPresets() {
+    // Clear any previous elements in modal body
+    this.clearPresets();
+
+    // Get saved presets from DB
+    indexDB.presets
+      .toArray()
+      .then((presets) => {
+        // Build fragment with cards for each preset
+        const cards = document.createDocumentFragment();
+
+        presets.forEach((preset) => {
+          // Sorry no IE garbage allowed here
+          const template = document.createElement("template");
+
+          template.innerHTML = `
+          <div class="preset-card">
+            <img src=${URL.createObjectURL(preset.thumbnail)} alt="Thumbnail" class="preset-img"/>
+            <div class="preset-info">
+                <h1 class="preset-title">${preset.name}</h1>
+
+                <span>Grid Size: ${preset.gridSize}</span>
+                <span>Cell Size: ${preset.cellSize}</span>  
+            </div>
+            <span class="preset-delete">&times;</span>
+          </div>
+          `.trim();
+
+          // Give it a click event handler for load / delete
+          template.content.firstChild.addEventListener("click", (e) => {
+            if (e.target.className === "preset-delete") {
+              // Delete icon clicked so delete the preset
+              this.delete(preset.id);
+            } else {
+              // Load the clicked preset
+              this.load(preset);
+            }
+          });
+
+          cards.appendChild(template.content.firstChild);
+        });
+
+        // Add cards to modal body
+        presetModalBody.appendChild(cards);
+      })
+      .catch((error) => {
+        // Hide modal and present error
+        presetModal.style.display = "none";
+
+        alert(`An error occured: ${error}`);
+      });
+  }
+
+  // Will clear preset cards to prep for re-render of new list
+  clearPresets() {
+    while (presetModalBody.firstChild) {
+      presetModalBody.removeChild(presetModalBody.lastChild);
+    }
+  }
 }
