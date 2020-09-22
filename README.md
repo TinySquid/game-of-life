@@ -24,15 +24,34 @@ A. If you want to run in dev mode (live server + watcher) then use `yarn dev` or
 
 B. If you want to build the app then use `yarn build` or `npm run build`. The resulting build will be in the `/dist/production` folder.
 
-## GIF Showcase
+## Showcase pics / gifs
 
-Showing a couple of the features (color changing, reset, custom drawing with mouse)
+### Static rendering of the app main screen
+
+![Static app main screen](/docs/img/static-b.png)
+
+### Tablet view
+
+![Static tablet view](/docs/img/tablet-a.png)
+
+### Mobile view
+
+![Static tablet view](/docs/img/mobile-a.png)
+
+### Static rendering of the load preset modal
+
+![Static modal screen](/docs/img/static-a.png)
+
+### Showing a couple of the features (color changing, reset, custom drawing with mouse)
+
 ![Demo of gameplay](/docs/img/presentation-a.gif)
 
-Demo of the save / load system
+### Demo of the save / load system
+
 ![Demo of the save / load mechanic](/docs/img/presentation-b.gif)
 
-300 x 300 grid of 2x2 cells with some decent performance (algorithm is still O(n^2) currently)
+### 300 x 300 grid of 2x2 cells with some decent performance (algorithm is still O(n^2) currently)
+
 ![Demo of large board & small cell size](/docs/img/presentation-c.gif)
 
 ## Examples of Emergent Patterns
@@ -45,5 +64,5 @@ Demo of the save / load system
 - ~~Refactor save/load system (ultimately will require some refactoring of the Grid class as well)~~ -> Done!
   - ~~Maybe switch to using indexDB to store saved presets instead of saving to file?~~ -> Done! (Using Dexie)
 - Darkmode because who doesn't love it?
-- Refactor styling and make app mobile friendly...
+- ~~Refactor styling and make app mobile friendly...~~ -> \*Done-ish (Need to dynamically change canvas through js because of how the touch event works, and I don't want to remove the drawing capability)
 - Refactor logic to be O(n) where n is the number of "changed" cells only. Right now it bruteforces the whole grid O(n^2). Previous attempts at re-rendering changed cells only caused weird canvas bugs that made cells stretch across the screen for some reason.
