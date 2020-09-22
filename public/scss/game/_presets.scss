@@ -15,11 +15,16 @@
 
 .presets-list-item {
   padding: 1rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.35);
+}
+
+.presets-list-item:first-child {
+  border-top: 1px solid rgba(0, 0, 0, 0.35);
 }
 
 .presets-img {
-  max-width: 64px;
-  max-height: 64px;
+  max-width: 100px;
+  max-height: 100px;
 }
 
 .presets-btn {
