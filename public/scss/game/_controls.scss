@@ -93,6 +93,12 @@
   @include media("<=1250px") {
     display: block;
   }
+
+  @include media("<=phone") {
+    input {
+      margin: 1rem 0;
+    }
+  }
 }
 
 // Color inputs
@@ -119,5 +125,14 @@
   @include media("<=1250px") {
     width: 50%;
     margin: 1rem auto;
+  }
+
+  @include media("<=phone") {
+    width: 100%;
+
+    input {
+      margin: 0.3rem auto;
+      height: 30px;
+    }
   }
 }

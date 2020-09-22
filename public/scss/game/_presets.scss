@@ -6,6 +6,7 @@
   width: 15%;
 
   @include media("<=1250px") {
+    // Size to screen accordingly
     width: 100%;
   }
 }
@@ -19,8 +20,14 @@
   flex-direction: column;
 
   @include media("<=1250px") {
+    // Row order & centered
     flex-direction: row;
     justify-content: center;
+  }
+
+  @include media("<=phone") {
+    // Must wrap items on mobile
+    flex-wrap: wrap;
   }
 }
 
@@ -29,6 +36,7 @@
   border-bottom: 1px solid rgba(0, 0, 0, 0.35);
 
   @include media("<=1250px") {
+    // Remove borders
     border: none;
   }
 }
@@ -37,6 +45,7 @@
   border-top: 1px solid rgba(0, 0, 0, 0.35);
 
   @include media("<=1250px") {
+    // Remove first child border on break
     border: none;
   }
 }
@@ -44,6 +53,12 @@
 .presets-img {
   max-width: 100px;
   max-height: 100px;
+
+  @include media("<=phone") {
+    // Make images smaller on mobile
+    max-width: 64px;
+    max-height: 64px;
+  }
 }
 
 .presets-btn {

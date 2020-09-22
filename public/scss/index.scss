@@ -18,6 +18,11 @@
 .title {
   font-size: 4rem;
   font-style: italic;
+
+  @include media("<=phone") {
+    // Don't want the title to word wrap on mobile
+    font-size: 3rem;
+  }
 }
 
 .container {

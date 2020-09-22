@@ -8,10 +8,40 @@
   padding: 1rem;
 
   box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.3);
+
+  @include media("<=1250px") {
+    width: 100%;
+  }
+}
+
+.about {
+  width: 70%;
+  hyphens: auto;
+  border-right: 1px solid rgba(0, 0, 0, 0.5);
+
+  p {
+    letter-spacing: 0.05rem;
+  }
+
+  @include media("<=1250px") {
+    // Adjust text and remove side border since we are row wrapped at this point
+    width: 100%;
+    border: none;
+
+    h2 {
+      padding-left: 0;
+    }
+
+    p {
+      // To match p text with bullets in rules section
+      padding-left: 16px;
+    }
+  }
 }
 
 .rules {
   width: 30%;
+  padding-left: 10px;
 
   ul {
     padding-left: 20px;
@@ -19,17 +49,19 @@
   }
 
   li {
-    letter-spacing: 0.04rem;
+    letter-spacing: 0.05rem;
     margin: 0.4rem 0;
+  }
 
-    @include media("<=1250px") {
-      margin: 0.8rem 0;
+  @include media("<=1250px") {
+    // Adjust text
+    width: 100%;
+    margin: 0.8rem 0;
+
+    h2 {
+      padding-left: 0;
     }
   }
-}
-
-.about {
-  width: 70%;
 }
 
 .source {
