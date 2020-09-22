@@ -5,7 +5,7 @@ import { uniqueNamesGenerator, colors, animals } from "unique-names-generator";
 import { canvas } from "../Canvas/GameCanvas";
 
 // Input values to save
-import { presetModal, presetModalBody, presetModalCloseElements, loadBtn, getInputValues } from "../IO/GameControls";
+import { presetModal, presetModalBody, presetModalCloseElements, getInputValues } from "../IO/GameControls";
 
 // Database funcs
 import indexDB from "./db";
@@ -72,27 +72,43 @@ export default class SaveManager {
 
   // Used by load button to prompt with modal
   openModal() {
-    presetModal.style.display = "block";
+    this.getSavedPresets()
+      .then((result) => {
+        if (result) {
+          presetModal.style.display = "block";
+        } else {
+          alert("No saved presets found.");
+        }
+      })
+      .catch((error) => {
+        // Hide modal and present error
+        presetModal.style.display = "none";
 
-    this.getSavedPresets();
+        alert(`An error occured: ${error}`);
+      });
   }
 
-  // Returns an HTML card for each preset saved in the DB
+  //* Loads presets from DB and appends cards for each into modal body
+  //* returns promise with true/false if there were presets loaded
   getSavedPresets() {
     // Clear any previous elements in modal body
     this.clearPresets();
 
     // Get saved presets from DB
-    indexDB.presets
+    return indexDB.presets
       .toArray()
       .then((presets) => {
-        // Build fragment with cards for each preset
+        // Send null to next handler when no cards will be made
+        if (presets.length === 0) return null;
+
+        // Otherwise continue and build a fragment with cards for each preset
         const cards = document.createDocumentFragment();
 
         presets.forEach((preset) => {
           // Sorry no IE garbage allowed here
           const template = document.createElement("template");
 
+          // Card component
           template.innerHTML = `
           <div class="preset-card">
             <img src=${URL.createObjectURL(preset.thumbnail)} alt="Thumbnail" class="preset-img"/>
@@ -106,7 +122,7 @@ export default class SaveManager {
           </div>
           `.trim();
 
-          // Give it a click event handler for load / delete
+          // Give card a click event handler for load / delete
           template.content.firstChild.addEventListener("click", (e) => {
             if (e.target.className === "preset-delete") {
               // Delete icon clicked so delete the preset
@@ -120,14 +136,17 @@ export default class SaveManager {
           cards.appendChild(template.content.firstChild);
         });
 
-        // Add cards to modal body
-        presetModalBody.appendChild(cards);
+        return cards;
       })
-      .catch((error) => {
-        // Hide modal and present error
-        presetModal.style.display = "none";
+      .then((cards) => {
+        // Return success of operation
+        if (cards) {
+          // Add cards to modal body
+          presetModalBody.appendChild(cards);
 
-        alert(`An error occured: ${error}`);
+          return true;
+        }
+        return false;
       });
   }
 
