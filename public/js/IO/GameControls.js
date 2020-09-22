@@ -27,6 +27,9 @@ const customColorDead = document.getElementById("custom-color-dead-input");
 
 // Presets
 const presetPulsar = document.getElementById("pulsar");
+const presetB29 = document.getElementById("b29");
+const presetFireship = document.getElementById("fireship");
+const presetSpider = document.getElementById("spider");
 
 function overrideWithPresetValues(values) {
   speedInput.value = values.simulationSpeed;
@@ -76,6 +79,9 @@ export {
   customColorDead,
   // Presets
   presetPulsar,
+  presetB29,
+  presetFireship,
+  presetSpider,
   // Function for preset usage
   overrideWithPresetValues,
   getInputValues,

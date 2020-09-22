@@ -116,6 +116,18 @@ function initGameInputEventListeners(gameInstance) {
   GameControls.presetPulsar.addEventListener("click", (e) => {
     gameInstance.usePreset(presets.PULSAR_PRESET);
   });
+
+  GameControls.presetB29.addEventListener("click", (e) => {
+    gameInstance.usePreset(presets.B29_PRESET);
+  });
+
+  GameControls.presetFireship.addEventListener("click", (e) => {
+    gameInstance.usePreset(presets.FIRESHIP_PRESET);
+  });
+
+  GameControls.presetSpider.addEventListener("click", (e) => {
+    gameInstance.usePreset(presets.SPIDER_PRESET);
+  });
 }
 
 function setGameInputDefaults() {
