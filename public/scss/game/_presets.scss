@@ -1,7 +1,13 @@
+@import "../responsive";
+
 .presets {
   text-align: center;
   box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.3);
   width: 15%;
+
+  @include media("<=1250px") {
+    width: 100%;
+  }
 }
 
 .presets__title {
@@ -11,15 +17,28 @@
 .presets-list {
   display: flex;
   flex-direction: column;
+
+  @include media("<=1250px") {
+    flex-direction: row;
+    justify-content: center;
+  }
 }
 
 .presets-list-item {
   padding: 1rem;
   border-bottom: 1px solid rgba(0, 0, 0, 0.35);
+
+  @include media("<=1250px") {
+    border: none;
+  }
 }
 
 .presets-list-item:first-child {
   border-top: 1px solid rgba(0, 0, 0, 0.35);
+
+  @include media("<=1250px") {
+    border: none;
+  }
 }
 
 .presets-img {

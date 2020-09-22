@@ -1,8 +1,18 @@
+@import "../responsive";
+
+// Container for all game buttons, inputs, sliders, color pickers, etc
 .game-controls {
   width: 15%;
   box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.3);
+
+  @include media("<=1250px") {
+    // Move header text center and size container full width
+    text-align: center;
+    width: 100%;
+  }
 }
 
+// Container for game buttons and sim speed slider
 .game-options {
   display: flex;
   flex-direction: column;
@@ -10,8 +20,33 @@
   button {
     margin: 0.5rem 1rem;
   }
+
+  @include media("<=1250px") {
+    // Keeps sim speed slider from going wacky
+    align-items: center;
+
+    // Increase button size
+    button {
+      padding: 1rem 2.5rem;
+    }
+  }
 }
 
+// Buttons container (play, pause, etc)
+.game-buttons {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
+  @include media("<=1250px") {
+    // Move buttons to row order centered on screen
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}
+
+// Simulation speed slider
 .game-speed {
   display: flex;
   flex-direction: column;
@@ -27,33 +62,62 @@
     width: 80%;
     direction: rtl;
   }
+
+  @include media("<=1250px") {
+    display: block;
+    text-align: center;
+  }
 }
 
-.load-file-btn {
-  font-family: "Roboto Slab", serif;
-  font-size: 1.6rem;
+// Grid / Cell size inputs
+.board-sizing {
+  display: flex;
+  flex-direction: column;
+
   text-align: center;
 
-  margin: 0.5rem 1rem;
-  padding: 4px 0;
+  margin: 0 1rem;
 
-  color: black;
-  border: 1px solid black;
-  background-color: white;
+  padding-bottom: 1rem;
 
-  &:hover {
-    border: 1px solid rgb(65, 65, 65);
-    background-color: rgb(250, 250, 250);
-    cursor: pointer;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+
+  label {
+    margin: 1rem;
   }
 
-  &:active {
-    border: 1px solid rgb(45, 45, 45);
-    background-color: rgb(245, 245, 245);
+  #adjust-game-size-btn {
+    margin: 1rem 0;
+  }
+
+  @include media("<=1250px") {
+    display: block;
   }
 }
 
-#load-btn {
-  // Hide file input and use above label styled as a button instead
-  // display: none;
+// Color inputs
+.cell-colors {
+  display: flex;
+  flex-direction: column;
+
+  text-align: center;
+
+  label {
+    font-size: 1.6rem;
+    margin: 0.5rem 0;
+  }
+
+  input {
+    margin: 0 auto;
+
+    width: 50%;
+    height: 25px;
+  }
+
+  margin: 1rem 0;
+
+  @include media("<=1250px") {
+    width: 50%;
+    margin: 1rem auto;
+  }
 }

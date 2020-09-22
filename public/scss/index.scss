@@ -3,7 +3,7 @@
 @import "./defaults/typography";
 
 // Breakpoints and vars
-// @import "./responsive";
+@import "./responsive";
 @import "./variables";
 
 // Components
@@ -22,6 +22,8 @@
 
 .container {
   // self
+  min-height: calc(100vh - 70px);
+
   margin: 0 auto;
   width: 75%;
 
@@ -29,11 +31,14 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  @include media("<=1250px") {
+    width: 95%;
+  }
 }
 
 label {
   font-size: 1.8rem;
   font-style: normal;
   font-family: "Montserrat";
-  // text-align: left;
 }

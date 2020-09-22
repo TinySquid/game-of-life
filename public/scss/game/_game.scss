@@ -1,8 +1,7 @@
 @import "./presets";
 @import "./canvas";
 @import "./controls";
-@import "./sizing";
-@import "./colors";
+@import "../responsive";
 
 .game-container {
   display: flex;
@@ -10,4 +9,8 @@
   justify-content: center;
 
   width: 100%;
+
+  @include media("<=1250px") {
+    flex-direction: column;
+  }
 }
