@@ -12,7 +12,7 @@ The universe of the Game of Life is an infinite, two-dimensional orthogonal grid
 
 ## Deployed App
 
-[Click to go to live game](https://mike-gol.netlify.app/)
+[Click to go to live game](https://john-conways-game-of-life.netlify.app/)
 
 ## Deploy App Locally
 
