@@ -19,7 +19,7 @@
   },
   "homepage": "https://github.com/TinySquid/game-of-life#readme",
   "dependencies": {
-    "dexie": "^3.0.2",
+    "dexie": "^3.2.2",
     "unique-names-generator": "^4.3.1"
   },
   "devDependencies": {
